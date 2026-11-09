@@ -1,0 +1,375 @@
+{
+  "versi": "0.3",
+  "catatan": "Data Tahap A. Status 'terverifikasi' berarti halaman sumber sudah dibuka dan dicocokkan; 'perlu_verifikasi' berarti masih harus dicek ke sumber primer sebelum dipublikasikan. Relasi berkategori 'tematik' adalah tafsiran penyusun, bukan klaim pewarisan sejarah.",
+  "simpul": [
+    {
+      "id": "aristoteles",
+      "nama": "Aristoteles",
+      "kelompok": "klasik_modern_awal",
+      "karya_rujukan": {
+        "judul": "Physics (Buku II) dan Metaphysics",
+        "tahun": -350,
+        "perkiraan": true
+      },
+      "ringkasan": "Empat sebab (material, formal, efisien, final) sebagai penjelasan mengapa sesuatu ada atau berubah.",
+      "status": "terverifikasi"
+    },
+    {
+      "id": "plato",
+      "nama": "Plato",
+      "kelompok": "klasik_modern_awal",
+      "karya_rujukan": {
+        "judul": "Phaedrus (mitos Theuth dan Thamus)",
+        "tahun": -370,
+        "perkiraan": true
+      },
+      "ringkasan": "Tulisan sebagai teknologi yang, menurut Thamus, melemahkan ingatan.",
+      "status": "terverifikasi"
+    },
+    {
+      "id": "bacon",
+      "nama": "Francis Bacon",
+      "kelompok": "klasik_modern_awal",
+      "karya_rujukan": {
+        "judul": "Novum Organum",
+        "tahun": 1620,
+        "perkiraan": false
+      },
+      "ringkasan": "Pengetahuan dan kekuasaan berjalan bersama; ilmu bertujuan memberi manfaat bagi kehidupan.",
+      "status": "terverifikasi"
+    },
+    {
+      "id": "heidegger",
+      "nama": "Martin Heidegger",
+      "kelompok": "fenomenologi",
+      "karya_rujukan": {
+        "judul": "The Question Concerning Technology",
+        "tahun": 1954,
+        "perkiraan": false
+      },
+      "ringkasan": "Hakikat teknologi adalah cara menyingkapkan dunia sebagai persediaan (standing-reserve).",
+      "status": "terverifikasi"
+    },
+    {
+      "id": "ihde",
+      "nama": "Don Ihde",
+      "kelompok": "fenomenologi",
+      "karya_rujukan": {
+        "judul": "Technology and the Lifeworld: From Garden to Earth",
+        "tahun": 1990,
+        "perkiraan": false
+      },
+      "ringkasan": "Wakil utama postfenomenologi; teknologi memediasi hubungan manusia dengan dunia.",
+      "status": "terverifikasi"
+    },
+    {
+      "id": "verbeek",
+      "nama": "Peter-Paul Verbeek",
+      "kelompok": "fenomenologi",
+      "karya_rujukan": {
+        "judul": "What Things Do",
+        "tahun": 2005,
+        "perkiraan": false
+      },
+      "ringkasan": "Memperhalus gagasan mediasi dan menambahkan dimensi moral, dengan landasan Ihde dan Latour.",
+      "status": "terverifikasi"
+    },
+    {
+      "id": "latour",
+      "nama": "Bruno Latour",
+      "kelompok": "jejaring_relasional",
+      "karya_rujukan": {
+        "judul": "Reassembling the Social",
+        "tahun": 2005,
+        "perkiraan": false
+      },
+      "ringkasan": "Yang sosial dipahami sebagai rangkaian asosiasi antar aktor, manusia maupun bukan manusia (teori aktor-jaringan).",
+      "status": "terverifikasi"
+    },
+    {
+      "id": "floridi",
+      "nama": "Luciano Floridi",
+      "kelompok": "filsafat_informasi",
+      "karya_rujukan": {
+        "judul": "The Fourth Revolution",
+        "tahun": 2014,
+        "perkiraan": false
+      },
+      "ringkasan": "Infosfer sebagai lingkungan informasi; masyarakat hiper-historis bergantung pada ICT.",
+      "status": "terverifikasi"
+    },
+    {
+      "id": "winner",
+      "nama": "Langdon Winner",
+      "kelompok": "teknologi_dan_kekuasaan",
+      "karya_rujukan": {
+        "judul": "Do Artifacts Have Politics?",
+        "tahun": 1980,
+        "perkiraan": false
+      },
+      "ringkasan": "Teknologi dapat memuat makna politik lewat rancangan dan penggunaannya.",
+      "status": "terverifikasi"
+    },
+    {
+      "id": "feenberg",
+      "nama": "Andrew Feenberg",
+      "kelompok": "teknologi_dan_kekuasaan",
+      "karya_rujukan": {
+        "judul": "Critical Theory of Technology",
+        "tahun": 1991,
+        "perkiraan": false
+      },
+      "ringkasan": "Teori kritis teknologi; masyarakat awam perlu dilibatkan dalam membentuk teknologi.",
+      "status": "terverifikasi"
+    },
+    {
+      "id": "rogers",
+      "nama": "Everett Rogers",
+      "kelompok": "manajemen_teknologi",
+      "karya_rujukan": {
+        "judul": "Diffusion of Innovations",
+        "tahun": 1962,
+        "perkiraan": false
+      },
+      "ringkasan": "Mempopulerkan teori difusi inovasi: bagaimana inovasi menyebar dan diadopsi dalam suatu sistem sosial.",
+      "status": "terverifikasi"
+    },
+    {
+      "id": "davis",
+      "nama": "Fred Davis",
+      "kelompok": "manajemen_teknologi",
+      "karya_rujukan": {
+        "judul": "Perceived Usefulness, Perceived Ease of Use, and User Acceptance of Information Technology",
+        "tahun": 1989,
+        "perkiraan": false
+      },
+      "ringkasan": "Kegunaan dan kemudahan penggunaan yang dipersepsikan sebagai penentu penerimaan teknologi informasi.",
+      "status": "terverifikasi"
+    }
+  ],
+  "relasi": [
+    {
+      "dari": "heidegger",
+      "ke": "aristoteles",
+      "jenis": "menafsirkan_ulang",
+      "kategori": "tekstual",
+      "ringkasan": "Heidegger membaca ulang empat sebab Aristoteles sebagai cara 'berutang' dan techne sebagai penyingkapan.",
+      "sumber": [
+        {
+          "judul": "The Question Concerning Technê: Heidegger's Aristotle (esai di sfu.ca)",
+          "url": "https://www.sfu.ca/~andrewf/tech2a.htm"
+        },
+        {
+          "judul": "Stanford Encyclopedia of Philosophy, Philosophy of Technology (Heidegger 1954 [1977])",
+          "url": "https://plato.stanford.edu/entries/technology/"
+        }
+      ],
+      "status": "terverifikasi"
+    },
+    {
+      "dari": "heidegger",
+      "ke": "plato",
+      "jenis": "menafsirkan_ulang",
+      "kategori": "tekstual",
+      "ringkasan": "Heidegger mengutip Plato (Symposium 205b) untuk mendefinisikan poiesis sebagai pembawa sesuatu dari tak-hadir menjadi hadir.",
+      "sumber": [
+        {
+          "judul": "Heidegger, The Question Concerning Technology (teks lengkap; kutipan Plato, Symposium 205b)",
+          "url": "https://cs.gettysburg.edu/~duncjo01/assets/writings/library/question_concerning_technology.html"
+        },
+        {
+          "judul": "The Question Concerning Technê: Heidegger's Aristotle (esai di sfu.ca)",
+          "url": "https://www.sfu.ca/~andrewf/tech2a.htm"
+        }
+      ],
+      "status": "terverifikasi"
+    },
+    {
+      "dari": "bacon",
+      "ke": "aristoteles",
+      "jenis": "mengkritik",
+      "kategori": "tekstual",
+      "ringkasan": "Novum Organum diajukan sebagai logika baru untuk menggantikan Organon Aristoteles.",
+      "sumber": [
+        {
+          "judul": "Stanford Encyclopedia of Philosophy, Francis Bacon (bagian 4.2)",
+          "url": "https://plato.stanford.edu/entries/francis-bacon/"
+        }
+      ],
+      "status": "terverifikasi"
+    },
+    {
+      "dari": "ihde",
+      "ke": "heidegger",
+      "jenis": "membangun_di_atas",
+      "kategori": "tekstual",
+      "ringkasan": "Ihde mempertahankan analisis alat Heidegger (readiness-to-hand) dan memperluas analisis fenomenologis ke dunia yang dimediasi teknologi; ia menyebut posisinya pasca-Heideggerian, bukan anti-Heideggerian.",
+      "sumber": [
+        {
+          "judul": "Ginev, ulasan atas Ihde, Heidegger's Technologies: Postphenomenological Perspectives (Fordham University Press, 2010), Notre Dame Philosophical Reviews",
+          "url": "https://ndpr.nd.edu/reviews/heidegger-s-technologies-postphenomenological-perspectives/"
+        }
+      ],
+      "status": "terverifikasi"
+    },
+    {
+      "dari": "ihde",
+      "ke": "heidegger",
+      "jenis": "mengkritik",
+      "kategori": "tekstual",
+      "ringkasan": "Ihde menolak esensialisme Heidegger ('ada banyak teknologi, tidak ada esensi teknologi') dan menilainya mewarisi nostalgia tekno-romantik.",
+      "sumber": [
+        {
+          "judul": "Ginev, ulasan atas Ihde, Heidegger's Technologies: Postphenomenological Perspectives (Fordham University Press, 2010), Notre Dame Philosophical Reviews",
+          "url": "https://ndpr.nd.edu/reviews/heidegger-s-technologies-postphenomenological-perspectives/"
+        }
+      ],
+      "status": "terverifikasi"
+    },
+    {
+      "dari": "verbeek",
+      "ke": "ihde",
+      "jenis": "membangun_di_atas",
+      "kategori": "tekstual",
+      "ringkasan": "Verbeek memperluas karya Ihde dan menyebut pendekatannya postfenomenologis.",
+      "sumber": [
+        {
+          "judul": "Penn State University Press, What Things Do (deskripsi penerbit)",
+          "url": "https://www.psupress.org/books/titles/0-271-02539-5.html"
+        }
+      ],
+      "status": "terverifikasi"
+    },
+    {
+      "dari": "verbeek",
+      "ke": "latour",
+      "jenis": "membangun_di_atas",
+      "kategori": "tekstual",
+      "ringkasan": "Verbeek mengikuti tesis mediasi Latour tetapi menolak simetri penuh antara agensi manusia dan teknologi.",
+      "sumber": [
+        {
+          "judul": "Stanford Encyclopedia of Philosophy, Philosophy of Technology (Verbeek 2000 [2005])",
+          "url": "https://plato.stanford.edu/entries/technology/"
+        },
+        {
+          "judul": "Penn State University Press, What Things Do (bab 5, bagian 5.4)",
+          "url": "https://www.psupress.org/books/titles/0-271-02539-5.html"
+        }
+      ],
+      "status": "terverifikasi"
+    },
+    {
+      "dari": "verbeek",
+      "ke": "heidegger",
+      "jenis": "mengkritik",
+      "kategori": "tekstual",
+      "ringkasan": "Verbeek menilai filsafat teknologi klasik Jaspers dan Heidegger muram dan terlalu abstrak.",
+      "sumber": [
+        {
+          "judul": "Penn State University Press, What Things Do (deskripsi penerbit)",
+          "url": "https://www.psupress.org/books/titles/0-271-02539-5.html"
+        }
+      ],
+      "status": "terverifikasi"
+    },
+    {
+      "dari": "feenberg",
+      "ke": "heidegger",
+      "jenis": "mengkritik",
+      "kategori": "tekstual",
+      "ringkasan": "Feenberg menggolongkan Heidegger sebagai teori substantif yang fatalistik tentang teknologi.",
+      "sumber": [
+        {
+          "judul": "Feenberg, Critical Theory of Technology, bab 1 (hlm. 7 dan catatan 15)",
+          "url": "https://www.sfu.ca/~andrewf/books/critical_theory_of_technology.pdf"
+        }
+      ],
+      "status": "terverifikasi"
+    },
+    {
+      "dari": "feenberg",
+      "ke": "winner",
+      "jenis": "merujuk",
+      "kategori": "tekstual",
+      "ringkasan": "Feenberg merujuk Autonomous Technology karya Winner dalam tinjauan tentang tren determinisme teknologi.",
+      "sumber": [
+        {
+          "judul": "Feenberg, Critical Theory of Technology, bab 1 (catatan 4, hlm. 16)",
+          "url": "https://www.sfu.ca/~andrewf/books/critical_theory_of_technology.pdf"
+        }
+      ],
+      "status": "terverifikasi"
+    },
+    {
+      "dari": "feenberg",
+      "ke": "ihde",
+      "jenis": "merujuk",
+      "kategori": "tekstual",
+      "ringkasan": "Feenberg mengutip Ihde dan merujuk Technology and the Lifeworld (1990).",
+      "sumber": [
+        {
+          "judul": "Feenberg, Critical Theory of Technology, bab 1 (hlm. 13 dan catatan 17)",
+          "url": "https://www.sfu.ca/~andrewf/books/critical_theory_of_technology.pdf"
+        }
+      ],
+      "status": "terverifikasi"
+    },
+    {
+      "dari": "plato",
+      "ke": "floridi",
+      "jenis": "kaitan_tematik",
+      "kategori": "tematik",
+      "ringkasan": "Thamus mengkhawatirkan tulisan melemahkan ingatan; Floridi mendefinisikan 'sejarah' lewat ICT yang merekam dan memindahkan data, dan menyebut Plato di bab Hyperhistory.",
+      "alasan": "Tafsiran penyusun tentang tema yang sama (tulisan, ingatan, rekaman). Bukan klaim bahwa Floridi mewarisi Phaedrus; teks Floridi yang dibuka tidak menyebut Phaedrus.",
+      "sumber": [
+        {
+          "judul": "Plato, Phaedrus (terjemahan Jowett, kisah Theuth dan Thamus)",
+          "url": "https://users.pfw.edu/dfleming/PlatoPhaedrus.htm"
+        },
+        {
+          "judul": "Floridi, The Fourth Revolution (Oxford University Press), bab Hyperhistory",
+          "url": "https://issc.al.uw.edu.pl/wp-content/uploads/sites/2/2022/05/Luciano-Floridi-The-Fourth-Revolution_-How-the-infosphere-is-reshaping-human-reality-Oxford-University-Press-2014.pdf"
+        }
+      ],
+      "status": "terverifikasi"
+    },
+    {
+      "dari": "davis",
+      "ke": "verbeek",
+      "jenis": "kaitan_tematik",
+      "kategori": "tematik",
+      "ringkasan": "Davis menjelaskan penerimaan teknologi dari persepsi pengguna; Verbeek menganalisis bagaimana teknologi memediasi tindakan dan persepsi pengguna.",
+      "alasan": "Tafsiran penyusun yang menghubungkan dua sisi pengguna teknologi (penerimaan dan mediasi). Tidak ada klaim pengaruh langsung.",
+      "sumber": [
+        {
+          "judul": "Davis (1989), MIS Quarterly 13(3), 319-340",
+          "url": "https://verdi.cs.ucl.ac.uk/constructDB/publications/davis-perceived-1989.html"
+        },
+        {
+          "judul": "Penn State University Press, What Things Do (deskripsi penerbit)",
+          "url": "https://www.psupress.org/books/titles/0-271-02539-5.html"
+        }
+      ],
+      "status": "terverifikasi"
+    },
+    {
+      "dari": "rogers",
+      "ke": "feenberg",
+      "jenis": "kaitan_tematik",
+      "kategori": "tematik",
+      "ringkasan": "Rogers meneliti bagaimana inovasi diadopsi; Feenberg mendorong keterlibatan masyarakat awam dalam membentuk teknologi.",
+      "alasan": "Tafsiran penyusun: dua cara memandang peran pengguna terhadap teknologi (adopsi versus pembentukan). Sumber Rogers belum dibuka.",
+      "sumber": [
+        {
+          "judul": "Stanford Encyclopedia of Philosophy, Philosophy of Technology (Feenberg 1999, 'ordinary people')",
+          "url": "https://plato.stanford.edu/entries/technology/"
+        },
+        {
+          "judul": "Encyclopaedia Britannica, Diffusion of innovations (Rogers 1962)",
+          "url": "https://www.britannica.com/topic/diffusion-of-innovations"
+        }
+      ],
+      "status": "terverifikasi"
+    }
+  ]
+}
