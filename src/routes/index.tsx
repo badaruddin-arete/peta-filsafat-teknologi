@@ -10,6 +10,10 @@ import {
   type Node,
   type Edge,
   type NodeProps,
+  type EdgeProps,
+  BaseEdge,
+  Panel,
+  useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { simpul, relasi, KELOMPOK, JENIS, formatTahun, namaSimpul } from "@/lib/peta";
@@ -28,24 +32,53 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const COL_W = 260;
-const ROW_H = 110;
+const COL_W = 380;
+const ROW_H = 150;
+const NODE_W = 200;
+const FIT = { padding: 0.15 };
+const kolomDari = (id: string) => kelompokUrut.indexOf(simpul.find((s) => s.id === id)?.kelompok ?? "");
+const barisDari = (id: string) => {
+  const s = simpul.find((x) => x.id === id);
+  return s ? simpul.filter((x) => x.kelompok === s.kelompok).indexOf(s) : 0;
+};
+
+// Relasi dalam satu kolom: lengkung keluar ke sisi kanan kolom agar tidak menembus simpul di antaranya.
+function LengkungEdge({ id, sourceX, sourceY, targetX, targetY, style, markerEnd, interactionWidth }: EdgeProps) {
+  const off = 60 + Math.abs(targetY - sourceY) * 0.35;
+  const path = `M ${sourceX} ${sourceY} C ${sourceX + off} ${sourceY}, ${targetX + off} ${targetY}, ${targetX} ${targetY}`;
+  return <BaseEdge id={id} path={path} style={style} markerEnd={markerEnd} interactionWidth={interactionWidth} />;
+}
+const edgeTypes = { lengkung: LengkungEdge };
+
+function TombolPusat() {
+  const { fitView } = useReactFlow();
+  return (
+    <Panel position="top-right">
+      <button onClick={() => fitView({ ...FIT, duration: 400 })}
+        className="rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground shadow-sm hover:bg-muted">
+        Pusatkan ulang
+      </button>
+    </Panel>
+  );
+}
 const kelompokUrut = Object.keys(KELOMPOK);
 
 type PNode = Node<{ nama: string; color: string; dim: boolean; header?: boolean }>;
 
 function PemikirNode({ data }: NodeProps<PNode>) {
   if (data.header)
-    return <div className="w-[220px] text-center font-serif text-base font-semibold text-foreground">{data.nama}</div>;
+    return <div className="w-[200px] text-center font-serif text-lg font-semibold text-foreground">{data.nama}</div>;
   return (
     <div
-      className="w-[200px] rounded-lg border-2 bg-card px-3 py-2 text-center text-sm font-medium text-foreground shadow-sm transition-opacity"
+      className="w-[200px] cursor-pointer rounded-lg border-2 bg-card px-4 py-3 text-center text-base font-medium text-foreground shadow-sm transition-opacity"
       style={{ borderColor: data.color, opacity: data.dim ? 0.25 : 1 }}
     >
-      <Handle type="target" position={Position.Top} className="!opacity-0" />
+      <Handle id="tl" type="target" position={Position.Left} className="!opacity-0" />
+      <Handle id="tr" type="target" position={Position.Right} className="!opacity-0" />
       <span className="mr-1.5 inline-block h-2 w-2 rounded-full" style={{ background: data.color }} />
       {data.nama}
-      <Handle type="source" position={Position.Bottom} className="!opacity-0" />
+      <Handle id="sl" type="source" position={Position.Left} className="!opacity-0" />
+      <Handle id="sr" type="source" position={Position.Right} className="!opacity-0" />
     </div>
   );
 }
@@ -87,13 +120,13 @@ function Index() {
 
   const nodes: PNode[] = useMemo(() => {
     const out: PNode[] = kelompokUrut.map((k, c) => ({
-      id: `h-${k}`, type: "pemikir", position: { x: c * COL_W, y: 0 }, selectable: false, draggable: false,
+      id: `h-${k}`, type: "pemikir", position: { x: c * COL_W, y: 0 }, style: { cursor: "default" }, selectable: false, draggable: false,
       data: { nama: KELOMPOK[k]?.label ?? k, color: "", dim: false, header: true },
     }));
     kelompokUrut.forEach((k, c) => {
       simpul.filter((s) => s.kelompok === k).forEach((s, row) => {
         out.push({
-          id: s.id, type: "pemikir", position: { x: c * COL_W + 10, y: 60 + row * ROW_H },
+          id: s.id, type: "pemikir", position: { x: c * COL_W, y: 70 + row * ROW_H + (c % 2) * (ROW_H / 2) },
           data: { nama: s.nama, color: KELOMPOK[k]?.color ?? "var(--muted-foreground)", dim: !!tetangga && !tetangga.has(s.id) },
         });
       });
@@ -107,10 +140,15 @@ function Index() {
         const color = JENIS[r.jenis]?.color ?? "var(--muted-foreground)";
         const dim = pilih?.tipe === "simpul" ? r.dari !== pilih.id && r.ke !== pilih.id : pilih?.tipe === "relasi" && pilih.idx !== i;
         return {
+          ...(() => {
+            const a = kolomDari(r.dari), b = kolomDari(r.ke);
+            if (a === b) return { type: "lengkung", sourceHandle: "sr", targetHandle: "tr" };
+            return a < b ? { type: "default", sourceHandle: "sr", targetHandle: "tl" } : { type: "default", sourceHandle: "sl", targetHandle: "tr" };
+          })(),
           id: `e${i}`, source: r.dari, target: r.ke,
           markerEnd: { type: MarkerType.ArrowClosed, color, width: 18, height: 18 },
           style: { stroke: color, strokeWidth: 2, strokeDasharray: r.kategori === "tematik" ? "6 5" : undefined, opacity: dim ? 0.12 : 1 },
-          interactionWidth: 16,
+          interactionWidth: 20,
         };
       }),
     [terlihat, pilih],
@@ -149,7 +187,7 @@ function Index() {
       <main className="relative flex flex-1 min-h-[70vh]">
         <div className="flex-1">
           <ReactFlow
-            nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView colorMode={dark ? "dark" : "light"}
+            nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} fitView fitViewOptions={FIT} colorMode={dark ? "dark" : "light"}
             nodesDraggable={false} nodesConnectable={false}
             onNodeClick={(_, n) => !n.id.startsWith("h-") && setPilih({ tipe: "simpul", id: n.id })}
             onEdgeClick={(_, e) => setPilih({ tipe: "relasi", idx: Number(e.id.slice(1)) })}
@@ -157,7 +195,8 @@ function Index() {
             proOptions={{ hideAttribution: true }}
           >
             <Background gap={24} size={1} />
-            <Controls showInteractive={false} />
+            <Controls showInteractive={false} fitViewOptions={FIT} />
+            <TombolPusat />
           </ReactFlow>
         </div>
         {pilih && (
