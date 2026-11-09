@@ -1,6 +1,10 @@
 # Peta Pemikiran Filsafat Teknologi
 
-Peta interaktif yang memperlihatkan hubungan antar pemikir filsafat teknologi, dari akar klasik (Aristoteles, Plato, Bacon) sampai teori adopsi teknologi dalam manajemen (Rogers, Davis). **Setiap hubungan wajib bersumber** dan dapat diperiksa lewat tautan di panel samping.
+Peta interaktif yang memperlihatkan hubungan antar pemikir filsafat teknologi, dari akar klasik (Aristoteles, Plato, Bacon) sampai teori adopsi teknologi dalam manajemen (Rogers, Davis). **Setiap hubungan dan setiap posisi wajib bersumber** dan dapat diperiksa lewat tautan.
+
+Dua tampilan:
+- **I. Per Tradisi:** graf pemikir menurut tradisi dengan relasi bertipe (memengaruhi, mengkritik, membangun di atas, dan seterusnya).
+- **II. Per Pertanyaan:** enam pertanyaan yang menjembatani filsafat dan teknologi (misalnya "Apakah teknologi bersifat netral?"), dengan posisi tiap pemikir, kutipan pendek, dan sumbernya.
 
 **Demo:** https://peta-filsafat-teknologi.lovable.app
 
@@ -9,18 +13,20 @@ Peta interaktif yang memperlihatkan hubungan antar pemikir filsafat teknologi, d
 Kesalahan atribusi ("A memengaruhi B" tanpa dasar) adalah kegagalan terburuk peta seperti ini, jadi aturannya dipaksakan oleh kode, bukan hanya niat baik.
 
 - **12 pemikir, 14 relasi**, dikurasi manual. Data ada di [`src/data/peta.json`](src/data/peta.json).
+- **6 pertanyaan, 18 posisi** di [`src/data/pertanyaan.json`](src/data/pertanyaan.json). Posisi berkategori *tekstual* (dapat dikutip dari sumber) atau *tafsiran* (kesimpulan penyusun, wajib menyertakan alasan). Pandangan yang tidak punya wakil di peta, misalnya "teknologi netral", dicantumkan sebagai pembanding supaya satu sisi tidak tampil sendirian.
 - **Relasi tekstual** (11): klaim yang bersumber, misalnya "Feenberg mengkritik Heidegger" dengan rujukan bab dan halaman.
 - **Relasi tematik** (3, garis putus-putus): *tafsiran penyusun*, bukan klaim pewarisan sejarah. Wajib memuat kolom `alasan` yang menyatakannya sebagai tafsiran.
 - Setiap relasi punya sumber, dan relasi berstatus `terverifikasi` wajib memuat URL pada setiap sumbernya.
 - Tahun sebelum 1000 harus ditandai perkiraan.
 
-Aturan ini diperiksa oleh [`tools/validasi.py`](tools/validasi.py) dan 15 tes di [`tools/test_peta.py`](tools/test_peta.py): data tanpa sumber, simpul yatim, relasi kembar, relasi tematik tanpa alasan, dan sebagainya ditolak.
+Aturan ini diperiksa oleh [`tools/validasi.py`](tools/validasi.py) dan [`tools/validasi_pertanyaan.py`](tools/validasi_pertanyaan.py) dengan 30 tes: data tanpa sumber, simpul yatim, relasi kembar, tafsiran tanpa alasan, pemikir yang tidak ada di peta, kutipan terlalu panjang, dan pertanyaan yang hanya memuat satu sisi ditolak.
 
 ```bash
 cd tools
 pip install -r requirements.txt
 python validasi.py     # ringkasan data
-python -m pytest -q    # 15 tes
+python validasi_pertanyaan.py
+python -m pytest -q    # 30 tes
 ```
 
 ## Menjalankan antarmuka
@@ -34,6 +40,7 @@ bun run dev
 
 ## Keterbatasan
 
+- Posisi berkategori tafsiran (5 dari 18) adalah kesimpulan penyusun dan dapat diperdebatkan; alasannya dicantumkan di setiap kartu.
 - Peta ini **sengaja kecil** dan tidak mewakili seluruh filsafat teknologi. Banyak tokoh penting tidak ada, dan pemilihan simpul adalah keputusan penyusun.
 - Relasi tematik adalah tafsiran. Pembaca dianjurkan menilainya sendiri.
 - Ringkasan setiap pemikir hanyalah satu kalimat dan menyederhanakan banyak hal; rujuk karya aslinya.
