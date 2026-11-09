@@ -14,6 +14,7 @@ import {
   BaseEdge,
   Panel,
   useReactFlow,
+  useStore,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { simpul, relasi, KELOMPOK, JENIS, formatTahun, namaSimpul } from "@/lib/peta";
@@ -50,19 +51,34 @@ function LengkungEdge({ id, sourceX, sourceY, targetX, targetY, style, markerEnd
 const edgeTypes = { lengkung: LengkungEdge };
 
 function TombolPusat({ panelBuka }: { panelBuka: boolean }) {
-  const { fitView, getZoom, setZoom } = useReactFlow();
-  // Ukuran kanvas berubah saat panel samping dibuka/ditutup; pusatkan ulang setelahnya,
-  // lalu naikkan zoom bila hasil fitView membuat teks terlalu kecil untuk dibaca.
+  const { fitView, getZoom, getViewport, setViewport } = useReactFlow();
+  const w = useStore((s) => s.width);
+  const h = useStore((s) => s.height);
+
+  // Ukuran kanvas berubah saat panel samping dibuka/ditutup; pusatkan ulang setelahnya.
+  // Bila hasil fitView membuat teks terlalu kecil untuk dibaca, naikkan zoom sambil
+  // menjaga titik yang sedang berada di tengah kanvas tetap di tengah.
   const pusatkan = useCallback(
     (animate = true) => {
       const d = animate ? 300 : 0;
-      fitView({ ...FIT, duration: d });
-      const t = setTimeout(() => {
-        if (getZoom() < ZOOM_BACA) setZoom(ZOOM_BACA, { duration: animate ? 250 : 0 });
-      }, d + 80);
-      return () => clearTimeout(t);
+      // beri waktu React Flow membaca ukuran kanvas yang baru
+      const t1 = setTimeout(() => fitView({ ...FIT, duration: d }), 60);
+      const t2 = setTimeout(() => {
+        const z = getZoom();
+        if (z >= ZOOM_BACA || !w || !h) return;
+        const { x, y } = getViewport();
+        const cx = w / 2;
+        const cy = h / 2;
+        const fx = (cx - x) / z;
+        const fy = (cy - y) / z;
+        setViewport({ x: cx - fx * ZOOM_BACA, y: cy - fy * ZOOM_BACA, zoom: ZOOM_BACA }, { duration: d });
+      }, 60 + d + 80);
+      return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+      };
     },
-    [fitView, getZoom, setZoom],
+    [fitView, getZoom, getViewport, setViewport, w, h],
   );
 
   useEffect(() => pusatkan(), [panelBuka, pusatkan]);
