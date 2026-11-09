@@ -188,7 +188,7 @@ function Index() {
       <main className="relative flex flex-1 min-h-[70vh] overflow-hidden">
         <div className="relative min-w-0 flex-1">
           <ReactFlow
-            nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} fitView fitViewOptions={FIT} colorMode={dark ? "dark" : "light"}
+            nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} fitView fitViewOptions={FIT} minZoom={0.2} colorMode={dark ? "dark" : "light"}
             nodesDraggable={false} nodesConnectable={false}
             onNodeClick={(_, n) => !n.id.startsWith("h-") && setPilih({ tipe: "simpul", id: n.id })}
             onEdgeClick={(_, e) => setPilih({ tipe: "relasi", idx: Number(e.id.slice(1)) })}
