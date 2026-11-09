@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ReactFlow,
-  Background,
   Controls,
   MarkerType,
   Handle,
@@ -14,9 +13,10 @@ import {
   BaseEdge,
   Panel,
   useReactFlow,
-  useStore,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import { Button } from "@/components/ui/button";
+import { Moon, Sun, X } from "lucide-react";
 import { simpul, relasi, KELOMPOK, JENIS, formatTahun, namaSimpul } from "@/lib/peta";
 
 export const Route = createFileRoute("/")({
@@ -33,13 +33,12 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const COL_W = 380;
-const ROW_H = 150;
+const COL_W = 340;
+const ROW_H = 235;
 const NODE_W = 220;
-const FIT = { padding: 0.15, minZoom: 0.2 };
-// Batas zoom agar teks nama (NAMA_PX) tetap tampil minimal ~14px di layar.
-const NAMA_PX = 26;
-const ZOOM_BACA = 0.55;
+const FIT = { padding: 0.08, minZoom: 0.05 };
+const NAMA_PX = 34;
+const ROMAWI = ["I", "II", "III", "IV", "V", "VI"];
 const kolomDari = (id: string) => kelompokUrut.indexOf(simpul.find((s) => s.id === id)?.kelompok ?? "");
 
 // Relasi dalam satu kolom: lengkung keluar ke sisi kanan kolom agar tidak menembus simpul di antaranya.
@@ -50,79 +49,38 @@ function LengkungEdge({ id, sourceX, sourceY, targetX, targetY, style, markerEnd
 }
 const edgeTypes = { lengkung: LengkungEdge };
 
-function TombolPusat({ panelBuka, fokus }: { panelBuka: boolean; fokus: string | null }) {
-  const { fitView, getZoom, getViewport, setViewport, setCenter, getInternalNode } = useReactFlow();
-  const w = useStore((s) => s.width);
-  const h = useStore((s) => s.height);
-
-  // Ukuran kanvas berubah saat panel samping dibuka/ditutup; pusatkan ulang setelahnya.
-  // Bila hasil fitView membuat teks terlalu kecil untuk dibaca, naikkan zoom sambil
-  // menjaga titik yang sedang berada di tengah kanvas tetap di tengah.
-  // Bila ada simpul yang dipilih, pusatkan pada simpul itu agar tidak hilang terpotong.
-  const pusatkan = useCallback(
-    (animate = true, fokusId: string | null = null) => {
-      const d = animate ? 300 : 0;
-      // beri waktu React Flow membaca ukuran kanvas yang baru
-      const t1 = setTimeout(() => fitView({ ...FIT, duration: d }), 60);
-      const t2 = setTimeout(() => {
-        const z = Math.max(getZoom(), ZOOM_BACA);
-        if (fokusId) {
-          const n = getInternalNode(fokusId);
-          if (n) {
-            setCenter(
-              n.internals.positionAbsolute.x + (n.measured?.width ?? 0) / 2,
-              n.internals.positionAbsolute.y + (n.measured?.height ?? 0) / 2,
-              { zoom: z, duration: d },
-            );
-            return;
-          }
-        }
-        if (getZoom() >= ZOOM_BACA || !w || !h) return;
-        const { x, y } = getViewport();
-        const cx = w / 2;
-        const cy = h / 2;
-        const fx = (cx - x) / z;
-        const fy = (cy - y) / z;
-        setViewport({ x: cx - fx * z, y: cy - fy * z, zoom: z }, { duration: d });
-      }, 60 + d + 80);
-      return () => {
-        clearTimeout(t1);
-        clearTimeout(t2);
-      };
-    },
-    [fitView, getZoom, getViewport, setViewport, setCenter, getInternalNode, w, h],
-  );
-
-  useEffect(() => pusatkan(true, fokus), [panelBuka, fokus, pusatkan]);
+function TombolPusat() {
+  const { fitView } = useReactFlow();
   return (
     <Panel position="top-right">
-      <button onClick={() => pusatkan()}
-        className="rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground shadow-sm hover:bg-muted">
+      <Button variant="outline" size="sm" onClick={() => fitView({ ...FIT, duration: 300 })}>
         Pusatkan ulang
-      </button>
+      </Button>
     </Panel>
   );
 }
 const kelompokUrut = Object.keys(KELOMPOK);
 
-type PNode = Node<{ nama: string; color: string; dim: boolean; header?: boolean }>;
+type PNode = Node<{ nama: string; color: string; dim: boolean; header?: boolean; karya?: string; tahun?: string; dividerHeight?: number }>;
 
 function PemikirNode({ data }: NodeProps<PNode>) {
   if (data.header)
     return (
-      <div className="text-center font-serif font-semibold text-foreground" style={{ width: NODE_W, fontSize: NAMA_PX + 2, lineHeight: 1.15 }}>
+      <div className="tradition-heading font-serif font-semibold text-foreground" style={{ width: NODE_W, fontSize: 28, lineHeight: 1.15 }}>
         {data.nama}
+        {data.dividerHeight && <span className="tradition-divider" style={{ height: data.dividerHeight }} />}
       </div>
     );
   return (
     <div
-      className="cursor-pointer rounded-lg border-2 bg-card px-4 py-3 text-center font-medium text-foreground shadow-sm transition-opacity"
-      style={{ width: NODE_W, borderColor: data.color, opacity: data.dim ? 0.25 : 1, fontSize: NAMA_PX, lineHeight: 1.2 }}
+      className="catalogue-node cursor-pointer rounded-sm border border-foreground/50 bg-card px-3 py-4 text-center text-foreground transition-opacity"
+      style={{ width: NODE_W, opacity: data.dim ? 0.25 : 1, lineHeight: 1.15 }}
     >
       <Handle id="tl" type="target" position={Position.Left} className="!opacity-0" />
       <Handle id="tr" type="target" position={Position.Right} className="!opacity-0" />
-      <span className="mr-2 inline-block h-3 w-3 rounded-full align-middle" style={{ background: data.color }} />
-      {data.nama}
+      <div className="font-serif font-bold" style={{ fontSize: NAMA_PX }}>{data.nama}</div>
+      <div className="mt-2 text-[22px] italic leading-tight">{data.karya}</div>
+      <div className="mt-1 text-[20px] text-muted-foreground">{data.tahun}</div>
       <Handle id="sl" type="source" position={Position.Left} className="!opacity-0" />
       <Handle id="sr" type="source" position={Position.Right} className="!opacity-0" />
     </div>
@@ -139,15 +97,8 @@ function Index() {
   const [dark, setDark] = useState(false);
 
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const apply = () => {
-      document.documentElement.classList.toggle("dark", mq.matches);
-      setDark(mq.matches);
-    };
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
+    document.documentElement.classList.toggle("dark", dark);
+  }, [dark]);
 
   const terlihat = useMemo(
     () => relasi.map((r, i) => ({ r, i })).filter(({ r }) => aktif.has(r.jenis) && (tematik || r.kategori !== "tematik")),
@@ -167,13 +118,13 @@ function Index() {
   const nodes: PNode[] = useMemo(() => {
     const out: PNode[] = kelompokUrut.map((k, c) => ({
       id: `h-${k}`, type: "pemikir", position: { x: c * COL_W, y: 0 }, style: { cursor: "default" }, selectable: false, draggable: false,
-      data: { nama: KELOMPOK[k]?.label ?? k, color: "", dim: false, header: true },
+      data: { nama: `${ROMAWI[c]}. ${KELOMPOK[k]?.label ?? k}`, color: "", dim: false, header: true, dividerHeight: c < kelompokUrut.length - 1 ? 580 : undefined },
     }));
     kelompokUrut.forEach((k, c) => {
       simpul.filter((s) => s.kelompok === k).forEach((s, row) => {
         out.push({
-          id: s.id, type: "pemikir", position: { x: c * COL_W, y: 70 + row * ROW_H + (c % 2) * (ROW_H / 2) },
-          data: { nama: s.nama, color: KELOMPOK[k]?.color ?? "var(--muted-foreground)", dim: !!tetangga && !tetangga.has(s.id) },
+          id: s.id, type: "pemikir", position: { x: c * COL_W, y: 110 + row * ROW_H + (c % 2) * (ROW_H / 2) },
+          data: { nama: s.nama, color: KELOMPOK[k]?.color ?? "var(--muted-foreground)", dim: !!tetangga && !tetangga.has(s.id), karya: s.karya_rujukan.judul, tahun: formatTahun(s.karya_rujukan.tahun, s.karya_rujukan.perkiraan) },
         });
       });
     });
@@ -193,7 +144,7 @@ function Index() {
           })(),
           id: `e${i}`, source: r.dari, target: r.ke,
           markerEnd: { type: MarkerType.ArrowClosed, color, width: 18, height: 18 },
-          style: { stroke: color, strokeWidth: 2, strokeDasharray: r.kategori === "tematik" ? "6 5" : undefined, opacity: dim ? 0.12 : 1 },
+          style: { stroke: color, strokeWidth: 1.25, strokeDasharray: r.kategori === "tematik" ? "6 5" : undefined, opacity: dim ? 0.12 : r.kategori === "tematik" ? 0.45 : 0.85 },
           interactionWidth: 20,
         };
       }),
@@ -205,24 +156,29 @@ function Index() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <header className="border-b border-border px-5 py-5">
-        <h1 className="font-serif text-2xl font-semibold md:text-3xl">Peta Pemikiran Filsafat Teknologi</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Hubungan antar pemikir filsafat teknologi, setiap relasi disertai sumber.</p>
+      <header className="title-page relative px-6 pb-5 pt-8 text-center md:px-16">
+        <Button variant="ghost" size="icon" className="absolute right-3 top-3" onClick={() => setDark((v) => !v)} aria-label={dark ? "Mode terang" : "Mode gelap"} title={dark ? "Mode terang" : "Mode gelap"}>
+          {dark ? <Sun /> : <Moon />}
+        </Button>
+        <h1 className="book-title mx-auto max-w-4xl font-serif text-4xl font-semibold md:text-5xl">Peta Pemikiran Filsafat Teknologi</h1>
+        <blockquote className="mt-4 text-lg italic">“The essence of technology is by no means anything technological.”</blockquote>
+        <p className="mt-1 text-sm text-muted-foreground">Martin Heidegger, <em>The Question Concerning Technology</em> (1954)</p>
       </header>
 
-      <section className="flex flex-wrap items-center gap-2 border-b border-border px-5 py-3">
+      <section className="flex flex-wrap items-center gap-x-4 gap-y-2 border-y border-border px-6 py-3">
+        <h2 className="small-label mr-2 text-xs">Cara membaca</h2>
         {Object.entries(JENIS).map(([j, v]) => {
           const on = aktif.has(j);
           return (
-            <button key={j} onClick={() => toggle(j)} aria-pressed={on}
-              className={`flex items-center gap-2 rounded-full border px-3 py-1 text-xs transition ${on ? "border-foreground/30 bg-card" : "border-border text-muted-foreground opacity-50"}`}>
+            <Button variant="ghost" size="sm" key={j} onClick={() => toggle(j)} aria-pressed={on}
+              className={`h-auto rounded-none px-0 py-1 text-sm ${on ? "text-foreground" : "text-muted-foreground opacity-40"}`}>
               <svg width="22" height="6"><line x1="0" y1="3" x2="22" y2="3" stroke={v.color} strokeWidth="3" strokeDasharray={j === "kaitan_tematik" ? "4 3" : undefined} /></svg>
               {v.label}
-            </button>
+            </Button>
           );
         })}
         <label className="ml-auto flex cursor-pointer items-center gap-2 text-xs">
-          <input type="checkbox" checked={tematik} onChange={(e) => setTematik(e.target.checked)} className="accent-[var(--teal)]" />
+          <input type="checkbox" checked={tematik} onChange={(e) => setTematik(e.target.checked)} className="accent-primary" />
           Tampilkan relasi tematik
         </label>
         <p className="w-full text-xs text-muted-foreground">
@@ -230,24 +186,23 @@ function Index() {
         </p>
       </section>
 
-      <main className="relative flex flex-1 min-h-[70vh] overflow-hidden">
+      <main className="relative flex flex-1 min-h-[540px] overflow-hidden">
         <div className="relative min-w-0 flex-1">
           <ReactFlow
-            nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} fitView fitViewOptions={FIT} minZoom={0.2} colorMode={dark ? "dark" : "light"}
+            nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} fitView fitViewOptions={FIT} minZoom={0.05} colorMode={dark ? "dark" : "light"}
             nodesDraggable={false} nodesConnectable={false}
             onNodeClick={(_, n) => !n.id.startsWith("h-") && setPilih({ tipe: "simpul", id: n.id })}
             onEdgeClick={(_, e) => setPilih({ tipe: "relasi", idx: Number(e.id.slice(1)) })}
             onPaneClick={() => setPilih(null)}
             proOptions={{ hideAttribution: true }}
           >
-            <Background gap={24} size={1} />
-            <Controls showInteractive={false} fitViewOptions={FIT} />
-            <TombolPusat panelBuka={!!pilih} fokus={pilih?.tipe === "simpul" ? pilih.id : null} />
+            <Controls showInteractive={false} showFitView={false} />
+            <TombolPusat />
           </ReactFlow>
         </div>
         {pilih && (
-          <aside className="fixed inset-x-0 bottom-0 z-20 max-h-[60vh] overflow-y-auto rounded-t-2xl border-t border-border bg-card p-5 shadow-2xl md:static md:max-h-none md:w-96 md:rounded-none md:border-l md:border-t-0 md:shadow-none">
-            <button onClick={() => setPilih(null)} className="float-right text-sm text-muted-foreground hover:text-foreground" aria-label="Tutup">✕</button>
+          <aside className="notes-panel absolute bottom-0 right-0 top-0 z-20 w-[min(360px,90%)] overflow-y-auto border-l border-foreground/30 bg-card p-6">
+            <Button variant="ghost" size="icon" onClick={() => setPilih(null)} className="float-right -mr-3 -mt-3 text-muted-foreground" aria-label="Tutup"><X /></Button>
             {pilih.tipe === "simpul" ? <PanelSimpul id={pilih.id} onPilih={setPilih} /> : <PanelRelasi idx={pilih.idx} />}
           </aside>
         )}
@@ -261,13 +216,14 @@ function Index() {
 }
 
 function PanelSimpul({ id, onPilih }: { id: string; onPilih: (p: Pilihan) => void }) {
-  const s = simpul.find((x) => x.id === id)!;
+  const s = simpul.find((x) => x.id === id);
+  if (!s) return null;
   const daftar = (arah: "keluar" | "masuk") =>
     relasi.map((r, i) => ({ r, i })).filter(({ r }) => (arah === "keluar" ? r.dari === id : r.ke === id));
   return (
     <div>
-      <p className="text-xs uppercase tracking-wide" style={{ color: KELOMPOK[s.kelompok]?.color }}>{KELOMPOK[s.kelompok]?.label}</p>
-      <h2 className="mt-1 font-serif text-2xl font-semibold">{s.nama}</h2>
+      <p className="small-label text-xs text-muted-foreground">{KELOMPOK[s.kelompok]?.label}</p>
+      <h2 className="mt-2 border-b border-foreground/40 pb-3 font-serif text-3xl font-semibold">{s.nama}</h2>
       <p className="mt-3 text-sm"><em>{s.karya_rujukan.judul}</em> ({formatTahun(s.karya_rujukan.tahun, s.karya_rujukan.perkiraan)})</p>
       <p className="mt-3 text-sm leading-relaxed">{s.ringkasan}</p>
       {(["keluar", "masuk"] as const).map((a) => (
@@ -277,10 +233,10 @@ function PanelSimpul({ id, onPilih }: { id: string; onPilih: (p: Pilihan) => voi
             {daftar(a).length === 0 && <li className="text-muted-foreground">Tidak ada.</li>}
             {daftar(a).map(({ r, i }) => (
               <li key={i}>
-                <button onClick={() => onPilih({ tipe: "relasi", idx: i })} className="text-left hover:underline">
+                <Button variant="link" onClick={() => onPilih({ tipe: "relasi", idx: i })} className="h-auto justify-start whitespace-normal p-0 text-left text-sm text-foreground">
                   <span style={{ color: JENIS[r.jenis]?.color }}>{JENIS[r.jenis]?.label ?? r.jenis}</span>{" "}
                   {a === "keluar" ? `→ ${namaSimpul(r.ke)}` : `← ${namaSimpul(r.dari)}`}
-                </button>
+                </Button>
               </li>
             ))}
           </ul>
@@ -296,24 +252,24 @@ function PanelRelasi({ idx }: { idx: number }) {
   const ok = r.status === "terverifikasi";
   return (
     <div>
-      <p className="text-xs uppercase tracking-wide" style={{ color: JENIS[r.jenis]?.color }}>{JENIS[r.jenis]?.label ?? r.jenis}</p>
-      <h2 className="mt-1 font-serif text-xl font-semibold">{namaSimpul(r.dari)} → {namaSimpul(r.ke)}</h2>
-      <span className={`mt-2 inline-block rounded-full px-2 py-0.5 text-xs ${ok ? "bg-teal/15 text-teal" : "bg-violet/15 text-violet"}`}>
+      <p className="small-label text-xs text-muted-foreground">{JENIS[r.jenis]?.label ?? r.jenis}</p>
+      <h2 className="mt-2 border-b border-foreground/40 pb-3 font-serif text-2xl font-semibold">{namaSimpul(r.dari)} → {namaSimpul(r.ke)}</h2>
+      <span className="small-label mt-3 inline-block rounded-sm border border-foreground/60 px-2 py-1 text-[10px] text-foreground">
         {ok ? "terverifikasi" : "perlu verifikasi"}
       </span>
       <p className="mt-3 text-sm leading-relaxed">{r.ringkasan}</p>
       {r.kategori === "tematik" && (
-        <div className="mt-4 rounded-lg border border-violet/40 bg-violet/10 p-3 text-sm">
-          <p className="font-serif font-semibold text-violet">Tafsiran penyusun</p>
+        <div className="mt-4 border-l border-dashed border-foreground/60 pl-4 text-sm">
+          <p className="font-serif font-semibold text-foreground">Tafsiran penyusun</p>
           <p className="mt-1">{r.alasan}</p>
         </div>
       )}
       <h3 className="mt-5 font-serif text-sm font-semibold">Sumber</h3>
-      <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
+      <ol className="mt-2 list-decimal space-y-2 pl-5 text-sm">
         {r.sumber.map((s) => (
           <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-teal underline-offset-2 hover:underline">{s.judul}</a></li>
         ))}
-      </ul>
+      </ol>
     </div>
   );
 }
