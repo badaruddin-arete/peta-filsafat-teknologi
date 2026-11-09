@@ -155,24 +155,24 @@ export function Index() {
     setAktif((p) => { const n = new Set(p); n.has(j) ? n.delete(j) : n.add(j); return n; });
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <header className="title-page relative px-6 pb-5 pt-8 text-center md:px-16">
+    <div className="flex h-screen flex-col overflow-hidden bg-background text-foreground">
+      <header className="title-page relative px-6 pb-2 pt-4 text-center md:px-16">
         <Button variant="ghost" size="icon" className="absolute right-3 top-3" onClick={() => setDark((v) => !v)} aria-label={dark ? "Mode terang" : "Mode gelap"} title={dark ? "Mode terang" : "Mode gelap"}>
           {dark ? <Sun /> : <Moon />}
         </Button>
-        <h1 className="book-title mx-auto max-w-4xl font-serif text-4xl font-semibold md:text-5xl">Peta Pemikiran Filsafat Teknologi</h1>
-        <blockquote className="mt-4 text-lg italic">“The essence of technology is by no means anything technological.”</blockquote>
-        <p className="mt-1 text-sm text-muted-foreground">Martin Heidegger, <em>The Question Concerning Technology</em> (1954)</p>
+        <h1 className="book-title mx-auto max-w-3xl font-serif text-2xl font-semibold md:text-3xl">Peta Pemikiran Filsafat Teknologi</h1>
+        <blockquote className="mt-2 text-base italic">“The essence of technology is by no means anything technological.”</blockquote>
+        <p className="mt-0.5 text-xs text-muted-foreground">Martin Heidegger, <em>The Question Concerning Technology</em> (1954)</p>
       </header>
 
-      <section className="flex flex-wrap items-center gap-x-4 gap-y-2 border-y border-border px-6 py-3">
-        <h2 className="small-label mr-2 text-xs">Cara membaca</h2>
+      <section className="flex flex-wrap items-center gap-x-4 gap-y-1 border-y border-border px-6 py-1.5">
+        <h2 className="small-label mr-1 text-[11px]">Cara membaca</h2>
         {Object.entries(JENIS).map(([j, v]) => {
           const on = aktif.has(j);
           return (
             <Button variant="ghost" size="sm" key={j} onClick={() => toggle(j)} aria-pressed={on}
-              className={`h-auto rounded-none px-0 py-1 text-sm ${on ? "text-foreground" : "text-muted-foreground opacity-40"}`}>
-              <svg width="22" height="6"><line x1="0" y1="3" x2="22" y2="3" stroke={v.color} strokeWidth="3" strokeDasharray={j === "kaitan_tematik" ? "4 3" : undefined} /></svg>
+              className={`h-auto rounded-none px-0 py-0.5 text-xs ${on ? "text-foreground" : "text-muted-foreground opacity-40"}`}>
+              <svg width="18" height="6"><line x1="0" y1="3" x2="18" y2="3" stroke={v.color} strokeWidth="3" strokeDasharray={j === "kaitan_tematik" ? "4 3" : undefined} /></svg>
               {v.label}
             </Button>
           );
@@ -181,12 +181,12 @@ export function Index() {
           <input type="checkbox" checked={tematik} onChange={(e) => setTematik(e.target.checked)} className="accent-primary" />
           Tampilkan relasi tematik
         </label>
-        <p className="w-full text-xs text-muted-foreground">
-          Garis penuh = relasi tekstual. Putus-putus = tafsiran penyusun, bukan klaim pewarisan sejarah.
-        </p>
+        <span className="text-[11px] text-muted-foreground">
+          Garis penuh = relasi tekstual; putus-putus = tafsiran penyusun.
+        </span>
       </section>
 
-      <main className="relative flex flex-1 min-h-[540px] overflow-hidden">
+      <main className="relative flex min-h-0 flex-1 overflow-hidden">
         <div className="relative min-w-0 flex-1">
           <ReactFlow
             nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} fitView fitViewOptions={FIT} minZoom={0.05} colorMode={dark ? "dark" : "light"}
@@ -267,7 +267,7 @@ function PanelRelasi({ idx }: { idx: number }) {
       <h3 className="mt-5 font-serif text-sm font-semibold">Sumber</h3>
       <ol className="mt-2 list-decimal space-y-2 pl-5 text-sm">
         {r.sumber.map((s) => (
-          <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-teal underline-offset-2 hover:underline">{s.judul}</a></li>
+          <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer" className="link-sumber">{s.judul}</a></li>
         ))}
       </ol>
     </div>

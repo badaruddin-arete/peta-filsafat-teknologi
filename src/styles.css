@@ -159,6 +159,7 @@
   --font-sans: "EB Garamond", Georgia, serif;
   --color-teal: var(--teal);
   --color-violet: var(--violet);
+  --color-indigo: var(--indigo);
 }
 :root {
   --radius: 2px;
@@ -181,6 +182,7 @@
   --ring: var(--primary);
   --teal: oklch(0.43 0.055 130);
   --violet: oklch(0.44 0.06 280);
+  --indigo: oklch(0.4 0.1 275);
   --g-klasik: var(--foreground); --g-fen: var(--foreground); --g-jej: var(--foreground);
   --g-info: var(--foreground); --g-kuasa: var(--foreground); --g-man: var(--foreground);
   --r-memengaruhi: oklch(0.46 0.06 130);
@@ -211,6 +213,7 @@
   --input: var(--border);
   --ring: var(--primary);
   --teal: var(--primary); --violet: oklch(0.72 0.065 280);
+  --indigo: oklch(0.75 0.09 275);
   --r-memengaruhi: oklch(0.71 0.06 130);
   --r-mengkritik: oklch(0.68 0.08 15);
   --r-membangun: oklch(0.7 0.065 280);
@@ -220,7 +223,9 @@
 }
 body { font-family: var(--font-sans); letter-spacing: 0; }
 body::after { content: ""; position: fixed; inset: 0; z-index: 50; pointer-events: none; opacity: 0.018; background-image: url('/paper-grain.png'); }
-.book-title { font-variant-caps: small-caps; border-bottom: 3px double var(--foreground); padding-bottom: 18px; }
+.book-title { font-variant-caps: small-caps; border-bottom: 3px double var(--foreground); padding-bottom: 10px; }
+.link-sumber { color: var(--indigo); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+.link-sumber:hover { text-decoration-thickness: 2px; }
 .small-label { font-family: Georgia, serif; text-transform: uppercase; letter-spacing: 0.12em; }
 .tradition-heading { position: relative; font-variant-caps: small-caps; text-align: center; }
 .tradition-divider { position: absolute; left: 280px; top: 0; width: 1px; background: var(--border); pointer-events: none; }
