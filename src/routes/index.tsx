@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ReactFlow,
   Background,
@@ -81,15 +81,19 @@ type PNode = Node<{ nama: string; color: string; dim: boolean; header?: boolean 
 
 function PemikirNode({ data }: NodeProps<PNode>) {
   if (data.header)
-    return <div className="w-[200px] text-center font-serif text-lg font-semibold text-foreground">{data.nama}</div>;
+    return (
+      <div className="text-center font-serif font-semibold text-foreground" style={{ width: NODE_W, fontSize: NAMA_PX + 2, lineHeight: 1.15 }}>
+        {data.nama}
+      </div>
+    );
   return (
     <div
-      className="w-[200px] cursor-pointer rounded-lg border-2 bg-card px-4 py-3 text-center text-base font-medium text-foreground shadow-sm transition-opacity"
-      style={{ borderColor: data.color, opacity: data.dim ? 0.25 : 1 }}
+      className="cursor-pointer rounded-lg border-2 bg-card px-4 py-3 text-center font-medium text-foreground shadow-sm transition-opacity"
+      style={{ width: NODE_W, borderColor: data.color, opacity: data.dim ? 0.25 : 1, fontSize: NAMA_PX, lineHeight: 1.2 }}
     >
       <Handle id="tl" type="target" position={Position.Left} className="!opacity-0" />
       <Handle id="tr" type="target" position={Position.Right} className="!opacity-0" />
-      <span className="mr-1.5 inline-block h-2 w-2 rounded-full" style={{ background: data.color }} />
+      <span className="mr-2 inline-block h-3 w-3 rounded-full align-middle" style={{ background: data.color }} />
       {data.nama}
       <Handle id="sl" type="source" position={Position.Left} className="!opacity-0" />
       <Handle id="sr" type="source" position={Position.Right} className="!opacity-0" />
