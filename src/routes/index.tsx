@@ -50,38 +50,50 @@ function LengkungEdge({ id, sourceX, sourceY, targetX, targetY, style, markerEnd
 }
 const edgeTypes = { lengkung: LengkungEdge };
 
-function TombolPusat({ panelBuka }: { panelBuka: boolean }) {
-  const { fitView, getZoom, getViewport, setViewport } = useReactFlow();
+function TombolPusat({ panelBuka, fokus }: { panelBuka: boolean; fokus: string | null }) {
+  const { fitView, getZoom, getViewport, setViewport, setCenter, getInternalNode } = useReactFlow();
   const w = useStore((s) => s.width);
   const h = useStore((s) => s.height);
 
   // Ukuran kanvas berubah saat panel samping dibuka/ditutup; pusatkan ulang setelahnya.
   // Bila hasil fitView membuat teks terlalu kecil untuk dibaca, naikkan zoom sambil
   // menjaga titik yang sedang berada di tengah kanvas tetap di tengah.
+  // Bila ada simpul yang dipilih, pusatkan pada simpul itu agar tidak hilang terpotong.
   const pusatkan = useCallback(
-    (animate = true) => {
+    (animate = true, fokusId: string | null = null) => {
       const d = animate ? 300 : 0;
       // beri waktu React Flow membaca ukuran kanvas yang baru
       const t1 = setTimeout(() => fitView({ ...FIT, duration: d }), 60);
       const t2 = setTimeout(() => {
-        const z = getZoom();
-        if (z >= ZOOM_BACA || !w || !h) return;
+        const z = Math.max(getZoom(), ZOOM_BACA);
+        if (fokusId) {
+          const n = getInternalNode(fokusId);
+          if (n) {
+            setCenter(
+              n.internals.positionAbsolute.x + (n.measured?.width ?? 0) / 2,
+              n.internals.positionAbsolute.y + (n.measured?.height ?? 0) / 2,
+              { zoom: z, duration: d },
+            );
+            return;
+          }
+        }
+        if (getZoom() >= ZOOM_BACA || !w || !h) return;
         const { x, y } = getViewport();
         const cx = w / 2;
         const cy = h / 2;
         const fx = (cx - x) / z;
         const fy = (cy - y) / z;
-        setViewport({ x: cx - fx * ZOOM_BACA, y: cy - fy * ZOOM_BACA, zoom: ZOOM_BACA }, { duration: d });
+        setViewport({ x: cx - fx * z, y: cy - fy * z, zoom: z }, { duration: d });
       }, 60 + d + 80);
       return () => {
         clearTimeout(t1);
         clearTimeout(t2);
       };
     },
-    [fitView, getZoom, getViewport, setViewport, w, h],
+    [fitView, getZoom, getViewport, setViewport, setCenter, getInternalNode, w, h],
   );
 
-  useEffect(() => pusatkan(), [panelBuka, pusatkan]);
+  useEffect(() => pusatkan(true, fokus), [panelBuka, fokus, pusatkan]);
   return (
     <Panel position="top-right">
       <button onClick={() => pusatkan()}
@@ -230,7 +242,7 @@ function Index() {
           >
             <Background gap={24} size={1} />
             <Controls showInteractive={false} fitViewOptions={FIT} />
-            <TombolPusat panelBuka={!!pilih} />
+            <TombolPusat panelBuka={!!pilih} fokus={pilih?.tipe === "simpul" ? pilih.id : null} />
           </ReactFlow>
         </div>
         {pilih && (
