@@ -34,8 +34,11 @@ export const Route = createFileRoute("/")({
 
 const COL_W = 380;
 const ROW_H = 150;
-const NODE_W = 200;
+const NODE_W = 220;
 const FIT = { padding: 0.15, minZoom: 0.2 };
+// Batas zoom agar teks nama (NAMA_PX) tetap tampil minimal ~14px di layar.
+const NAMA_PX = 26;
+const ZOOM_BACA = 0.55;
 const kolomDari = (id: string) => kelompokUrut.indexOf(simpul.find((s) => s.id === id)?.kelompok ?? "");
 
 // Relasi dalam satu kolom: lengkung keluar ke sisi kanan kolom agar tidak menembus simpul di antaranya.
@@ -47,15 +50,25 @@ function LengkungEdge({ id, sourceX, sourceY, targetX, targetY, style, markerEnd
 const edgeTypes = { lengkung: LengkungEdge };
 
 function TombolPusat({ panelBuka }: { panelBuka: boolean }) {
-  const { fitView } = useReactFlow();
-  // Ukuran kanvas berubah saat panel samping dibuka/ditutup; pusatkan ulang setelahnya.
-  useEffect(() => {
-    const t = setTimeout(() => fitView({ ...FIT, duration: 300 }), 60);
-    return () => clearTimeout(t);
-  }, [panelBuka, fitView]);
+  const { fitView, getZoom, setZoom } = useReactFlow();
+  // Ukuran kanvas berubah saat panel samping dibuka/ditutup; pusatkan ulang setelahnya,
+  // lalu naikkan zoom bila hasil fitView membuat teks terlalu kecil untuk dibaca.
+  const pusatkan = useCallback(
+    (animate = true) => {
+      const d = animate ? 300 : 0;
+      fitView({ ...FIT, duration: d });
+      const t = setTimeout(() => {
+        if (getZoom() < ZOOM_BACA) setZoom(ZOOM_BACA, { duration: animate ? 250 : 0 });
+      }, d + 80);
+      return () => clearTimeout(t);
+    },
+    [fitView, getZoom, setZoom],
+  );
+
+  useEffect(() => pusatkan(), [panelBuka, pusatkan]);
   return (
     <Panel position="top-right">
-      <button onClick={() => fitView({ ...FIT, duration: 400 })}
+      <button onClick={() => pusatkan()}
         className="rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground shadow-sm hover:bg-muted">
         Pusatkan ulang
       </button>
