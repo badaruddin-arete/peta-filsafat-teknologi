@@ -100,14 +100,55 @@ const nodeTypes = { pemikir: PemikirNode };
 type Pilihan = { tipe: "simpul"; id: string } | { tipe: "relasi"; idx: number } | null;
 
 export function Index() {
-  const [aktif, setAktif] = useState<Set<string>>(new Set(Object.keys(JENIS)));
-  const [tematik, setTematik] = useState(true);
-  const [pilih, setPilih] = useState<Pilihan>(null);
+  const { tampilan, simpul: simpulParam } = Route.useSearch();
   const [dark, setDark] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
   }, [dark]);
+
+  return (
+    <div className="flex h-screen flex-col overflow-hidden bg-background text-foreground">
+      <header className="title-page relative px-6 pb-2 pt-4 text-center md:px-16">
+        <Button variant="ghost" size="icon" className="absolute right-3 top-3" onClick={() => setDark((v) => !v)} aria-label={dark ? "Mode terang" : "Mode gelap"} title={dark ? "Mode terang" : "Mode gelap"}>
+          {dark ? <Sun /> : <Moon />}
+        </Button>
+        <h1 className="book-title mx-auto max-w-3xl font-serif text-2xl font-semibold md:text-3xl">Peta Pemikiran Filsafat Teknologi</h1>
+        <blockquote className="mt-2 text-base italic">“The essence of technology is by no means anything technological.”</blockquote>
+        <p className="mt-0.5 text-xs text-muted-foreground">Martin Heidegger, <em>The Question Concerning Technology</em> (1954)</p>
+      </header>
+
+      <nav className="flex justify-center gap-8 px-6 pt-1" aria-label="Tampilan">
+        {([["tradisi", "I. Per Tradisi"], ["pertanyaan", "II. Per Pertanyaan"]] as const).map(([id, label]) => (
+          <Link key={id} to="/" search={{ tampilan: id, simpul: "" }} aria-current={tampilan === id ? "page" : undefined}
+            className={`small-label border-b-2 pb-1.5 text-xs ${tampilan === id ? "border-foreground text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+            {label}
+          </Link>
+        ))}
+      </nav>
+
+      {tampilan === "pertanyaan" ? <PertanyaanView /> : <TampilanTradisi simpulAwal={simpulParam} dark={dark} />}
+
+      <footer className="border-t border-border px-5 py-4 text-xs text-muted-foreground">
+        Data dikurasi manual dan setiap relasi bersumber. Kerangka dan kode dibuat dengan bantuan AI (Claude dan Lovable). Hak cipta dilindungi.
+      </footer>
+    </div>
+  );
+}
+
+function TampilanTradisi({ simpulAwal, dark }: { simpulAwal: string; dark: boolean }) {
+  const navigate = useNavigate({ from: "/" });
+  const [aktif, setAktif] = useState<Set<string>>(new Set(Object.keys(JENIS)));
+  const [tematik, setTematik] = useState(true);
+  const [pilih, setPilih] = useState<Pilihan>(null);
+
+  // Tautan dari tampilan Per Pertanyaan: buka panel simpul sekali, lalu bersihkan param.
+  useEffect(() => {
+    if (simpulAwal && simpul.some((s) => s.id === simpulAwal)) {
+      setPilih({ tipe: "simpul", id: simpulAwal });
+      navigate({ search: (prev) => ({ ...prev, simpul: "" }), replace: true });
+    }
+  }, [simpulAwal, navigate]);
 
   const terlihat = useMemo(
     () => relasi.map((r, i) => ({ r, i })).filter(({ r }) => aktif.has(r.jenis) && (tematik || r.kategori !== "tematik")),
