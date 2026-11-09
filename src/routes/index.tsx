@@ -207,6 +207,7 @@ function PanelSimpul({ id, onPilih }: { id: string; onPilih: (p: Pilihan) => voi
 
 function PanelRelasi({ idx }: { idx: number }) {
   const r = relasi[idx];
+  if (!r) return null;
   const ok = r.status === "terverifikasi";
   return (
     <div>
