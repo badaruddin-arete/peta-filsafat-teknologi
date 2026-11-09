@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ReactFlow,
   Background,
@@ -14,6 +14,7 @@ import {
   BaseEdge,
   Panel,
   useReactFlow,
+  useStore,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { simpul, relasi, KELOMPOK, JENIS, formatTahun, namaSimpul } from "@/lib/peta";
@@ -34,8 +35,11 @@ export const Route = createFileRoute("/")({
 
 const COL_W = 380;
 const ROW_H = 150;
-const NODE_W = 200;
+const NODE_W = 220;
 const FIT = { padding: 0.15, minZoom: 0.2 };
+// Batas zoom agar teks nama (NAMA_PX) tetap tampil minimal ~14px di layar.
+const NAMA_PX = 26;
+const ZOOM_BACA = 0.55;
 const kolomDari = (id: string) => kelompokUrut.indexOf(simpul.find((s) => s.id === id)?.kelompok ?? "");
 
 // Relasi dalam satu kolom: lengkung keluar ke sisi kanan kolom agar tidak menembus simpul di antaranya.
@@ -46,16 +50,53 @@ function LengkungEdge({ id, sourceX, sourceY, targetX, targetY, style, markerEnd
 }
 const edgeTypes = { lengkung: LengkungEdge };
 
-function TombolPusat({ panelBuka }: { panelBuka: boolean }) {
-  const { fitView } = useReactFlow();
+function TombolPusat({ panelBuka, fokus }: { panelBuka: boolean; fokus: string | null }) {
+  const { fitView, getZoom, getViewport, setViewport, setCenter, getInternalNode } = useReactFlow();
+  const w = useStore((s) => s.width);
+  const h = useStore((s) => s.height);
+
   // Ukuran kanvas berubah saat panel samping dibuka/ditutup; pusatkan ulang setelahnya.
-  useEffect(() => {
-    const t = setTimeout(() => fitView({ ...FIT, duration: 300 }), 60);
-    return () => clearTimeout(t);
-  }, [panelBuka, fitView]);
+  // Bila hasil fitView membuat teks terlalu kecil untuk dibaca, naikkan zoom sambil
+  // menjaga titik yang sedang berada di tengah kanvas tetap di tengah.
+  // Bila ada simpul yang dipilih, pusatkan pada simpul itu agar tidak hilang terpotong.
+  const pusatkan = useCallback(
+    (animate = true, fokusId: string | null = null) => {
+      const d = animate ? 300 : 0;
+      // beri waktu React Flow membaca ukuran kanvas yang baru
+      const t1 = setTimeout(() => fitView({ ...FIT, duration: d }), 60);
+      const t2 = setTimeout(() => {
+        const z = Math.max(getZoom(), ZOOM_BACA);
+        if (fokusId) {
+          const n = getInternalNode(fokusId);
+          if (n) {
+            setCenter(
+              n.internals.positionAbsolute.x + (n.measured?.width ?? 0) / 2,
+              n.internals.positionAbsolute.y + (n.measured?.height ?? 0) / 2,
+              { zoom: z, duration: d },
+            );
+            return;
+          }
+        }
+        if (getZoom() >= ZOOM_BACA || !w || !h) return;
+        const { x, y } = getViewport();
+        const cx = w / 2;
+        const cy = h / 2;
+        const fx = (cx - x) / z;
+        const fy = (cy - y) / z;
+        setViewport({ x: cx - fx * z, y: cy - fy * z, zoom: z }, { duration: d });
+      }, 60 + d + 80);
+      return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+      };
+    },
+    [fitView, getZoom, getViewport, setViewport, setCenter, getInternalNode, w, h],
+  );
+
+  useEffect(() => pusatkan(true, fokus), [panelBuka, fokus, pusatkan]);
   return (
     <Panel position="top-right">
-      <button onClick={() => fitView({ ...FIT, duration: 400 })}
+      <button onClick={() => pusatkan()}
         className="rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground shadow-sm hover:bg-muted">
         Pusatkan ulang
       </button>
@@ -68,15 +109,19 @@ type PNode = Node<{ nama: string; color: string; dim: boolean; header?: boolean 
 
 function PemikirNode({ data }: NodeProps<PNode>) {
   if (data.header)
-    return <div className="w-[200px] text-center font-serif text-lg font-semibold text-foreground">{data.nama}</div>;
+    return (
+      <div className="text-center font-serif font-semibold text-foreground" style={{ width: NODE_W, fontSize: NAMA_PX + 2, lineHeight: 1.15 }}>
+        {data.nama}
+      </div>
+    );
   return (
     <div
-      className="w-[200px] cursor-pointer rounded-lg border-2 bg-card px-4 py-3 text-center text-base font-medium text-foreground shadow-sm transition-opacity"
-      style={{ borderColor: data.color, opacity: data.dim ? 0.25 : 1 }}
+      className="cursor-pointer rounded-lg border-2 bg-card px-4 py-3 text-center font-medium text-foreground shadow-sm transition-opacity"
+      style={{ width: NODE_W, borderColor: data.color, opacity: data.dim ? 0.25 : 1, fontSize: NAMA_PX, lineHeight: 1.2 }}
     >
       <Handle id="tl" type="target" position={Position.Left} className="!opacity-0" />
       <Handle id="tr" type="target" position={Position.Right} className="!opacity-0" />
-      <span className="mr-1.5 inline-block h-2 w-2 rounded-full" style={{ background: data.color }} />
+      <span className="mr-2 inline-block h-3 w-3 rounded-full align-middle" style={{ background: data.color }} />
       {data.nama}
       <Handle id="sl" type="source" position={Position.Left} className="!opacity-0" />
       <Handle id="sr" type="source" position={Position.Right} className="!opacity-0" />
@@ -197,7 +242,7 @@ function Index() {
           >
             <Background gap={24} size={1} />
             <Controls showInteractive={false} fitViewOptions={FIT} />
-            <TombolPusat panelBuka={!!pilih} />
+            <TombolPusat panelBuka={!!pilih} fokus={pilih?.tipe === "simpul" ? pilih.id : null} />
           </ReactFlow>
         </div>
         {pilih && (
