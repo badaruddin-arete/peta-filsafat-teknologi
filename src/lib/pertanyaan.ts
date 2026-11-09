@@ -1,10 +1,40 @@
 import data from "@/data/pertanyaan.json";
 
-export type Pertanyaan = (typeof data.pertanyaan)[number];
-export type Posisi = Pertanyaan["posisi"][number];
-export type Pembanding = Pertanyaan["pandangan_pembanding"][number];
-export type Sikap = Pertanyaan["pilihan_sikap"][number];
+export interface Sumber {
+  judul: string;
+  url: string;
+}
 
-export const pertanyaan: Pertanyaan[] = data.pertanyaan;
+export interface Sikap {
+  id: string;
+  label: string;
+}
 
-export const pertanyaanDari = (id: string) => pertanyaan.find((q) => q.id === id);
+export interface Posisi {
+  pemikir: string;
+  sikap: string;
+  kategori: "tekstual" | "tafsiran";
+  ringkasan: string;
+  kutipan?: string;
+  alasan?: string;
+  sumber: Sumber[];
+  status: string;
+}
+
+export interface Pembanding {
+  nama: string;
+  sikap: string;
+  ringkasan: string;
+  sumber: Sumber[];
+}
+
+export interface Pertanyaan {
+  id: string;
+  teks: string;
+  pengantar: string;
+  pilihan_sikap: Sikap[];
+  posisi: Posisi[];
+  pandangan_pembanding: Pembanding[];
+}
+
+export const pertanyaan: Pertanyaan[] = data.pertanyaan as Pertanyaan[];
