@@ -1,4 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { zodValidator, fallback } from "@tanstack/zod-adapter";
+import { z } from "zod";
 import { useEffect, useMemo, useState } from "react";
 import {
   ReactFlow,
@@ -18,8 +20,15 @@ import "@xyflow/react/dist/style.css";
 import { Button } from "@/components/ui/button";
 import { Moon, Sun, X } from "lucide-react";
 import { simpul, relasi, KELOMPOK, JENIS, formatTahun, namaSimpul } from "@/lib/peta";
+import { PertanyaanView } from "@/components/PertanyaanView";
+
+const cariSchema = z.object({
+  tampilan: fallback(z.string(), "tradisi").default("tradisi"),
+  simpul: fallback(z.string(), "").default(""),
+});
 
 export const Route = createFileRoute("/")({
+  validateSearch: zodValidator(cariSchema),
   head: () => ({
     meta: [
       { title: "Peta Pemikiran Filsafat Teknologi" },
