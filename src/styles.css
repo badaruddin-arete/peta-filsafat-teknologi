@@ -186,3 +186,5 @@
 }
 body { font-family: var(--font-sans); }
 .react-flow { --xy-background-color: transparent; }
+.react-flow { --xy-background-color: transparent; }
+.react-flow__edge, .react-flow__edge-interaction { cursor: pointer; }
