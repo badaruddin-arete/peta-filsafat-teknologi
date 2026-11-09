@@ -88,7 +88,7 @@ function Index() {
   const nodes: PNode[] = useMemo(() => {
     const out: PNode[] = kelompokUrut.map((k, c) => ({
       id: `h-${k}`, type: "pemikir", position: { x: c * COL_W, y: 0 }, selectable: false, draggable: false,
-      data: { nama: KELOMPOK[k].label, color: "", dim: false, header: true },
+      data: { nama: KELOMPOK[k]?.label ?? k, color: "", dim: false, header: true },
     }));
     kelompokUrut.forEach((k, c) => {
       simpul.filter((s) => s.kelompok === k).forEach((s, row) => {
