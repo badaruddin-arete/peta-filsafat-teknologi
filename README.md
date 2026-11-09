@@ -1,26 +1,48 @@
-# Peta Filsafat Teknologi
+# Peta Pemikiran Filsafat Teknologi
 
-Implement exactly the screenshot and nothing else
+Peta interaktif yang memperlihatkan hubungan antar pemikir filsafat teknologi, dari akar klasik (Aristoteles, Plato, Bacon) sampai teori adopsi teknologi dalam manajemen (Rogers, Davis). **Setiap hubungan wajib bersumber** dan dapat diperiksa lewat tautan di panel samping.
 
-This project was built with [Lovable](https://lovable.dev).
+**Demo:** https://peta-filsafat-teknologi.lovable.app
 
-**Live app**: https://peta-filsafat-teknologi.lovable.app
+## Prinsip data
 
-## Build with Lovable
+Kesalahan atribusi ("A memengaruhi B" tanpa dasar) adalah kegagalan terburuk peta seperti ini, jadi aturannya dipaksakan oleh kode, bukan hanya niat baik.
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/54f0e6df-c1e9-4a6b-919c-17cdb976bd53).
+- **12 pemikir, 14 relasi**, dikurasi manual. Data ada di [`src/data/peta.json`](src/data/peta.json).
+- **Relasi tekstual** (11): klaim yang bersumber, misalnya "Feenberg mengkritik Heidegger" dengan rujukan bab dan halaman.
+- **Relasi tematik** (3, garis putus-putus): *tafsiran penyusun*, bukan klaim pewarisan sejarah. Wajib memuat kolom `alasan` yang menyatakannya sebagai tafsiran.
+- Setiap relasi punya sumber, dan relasi berstatus `terverifikasi` wajib memuat URL pada setiap sumbernya.
+- Tahun sebelum 1000 harus ditandai perkiraan.
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+Aturan ini diperiksa oleh [`tools/validasi.py`](tools/validasi.py) dan 15 tes di [`tools/test_peta.py`](tools/test_peta.py): data tanpa sumber, simpul yatim, relasi kembar, relasi tematik tanpa alasan, dan sebagainya ditolak.
 
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+```bash
+cd tools
+pip install -r requirements.txt
+python validasi.py     # ringkasan data
+python -m pytest -q    # 15 tes
 ```
+
+## Menjalankan antarmuka
+
+Butuh [Bun](https://bun.sh).
+
+```bash
+bun install
+bun run dev
+```
+
+## Keterbatasan
+
+- Peta ini **sengaja kecil** dan tidak mewakili seluruh filsafat teknologi. Banyak tokoh penting tidak ada, dan pemilihan simpul adalah keputusan penyusun.
+- Relasi tematik adalah tafsiran. Pembaca dianjurkan menilainya sendiri.
+- Ringkasan setiap pemikir hanyalah satu kalimat dan menyederhanakan banyak hal; rujuk karya aslinya.
+- Ini bukan karya ilmiah yang ditelaah sejawat.
+
+## Transparansi pembuatan
+
+Rancangan model data, validator, dan pemeriksaan sumber saya susun dengan bantuan AI (Claude). Antarmukanya dibuat dengan Lovable. Kurasi dan tanggung jawab atas isi ada pada saya.
+
+## Lisensi
+
+Hak cipta dilindungi. Kode dan data boleh dibaca dan dinilai; penggunaan ulang memerlukan izin tertulis. Lihat [LICENSE](LICENSE).
