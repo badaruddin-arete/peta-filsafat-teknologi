@@ -13,7 +13,7 @@ export function zamanKarya(tahun: number) {
 export function posisiTahun(tahun: number) {
   if (tahun < 0) return 140 + ((tahun + 370) / 20) * 220;
   if (tahun < 1900) return 640;
-  return 960 + ((tahun - 1954) / (2014 - 1954)) * 1320;
+  return 960 + ((tahun - 1954) / (2014 - 1954)) * 900;
 }
 
 export function susunWaktu(daftar: readonly Simpul[] = simpul) {

@@ -281,6 +281,7 @@ function TampilanWaktu() {
             {...(pilih?.tipe === "relasi" ? { relasiDipilih: pilih.idx } : {})}
             onSimpul={(id) => setPilih({ tipe: "simpul", id })}
             onRelasi={(idx) => setPilih({ tipe: "relasi", idx })}
+            lebarPanel={pilih ? 360 : 0}
           />
         </div>
         {pilih && (

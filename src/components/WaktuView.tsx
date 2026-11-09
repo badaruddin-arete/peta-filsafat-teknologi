@@ -9,23 +9,25 @@ type Props = {
   relasiDipilih?: number;
   onSimpul: (id: string) => void;
   onRelasi: (idx: number) => void;
+  lebarPanel?: number;
 };
 
-export function WaktuView({ terlihat, dipilih, relasiDipilih, onSimpul, onRelasi }: Props) {
+export function WaktuView({ terlihat, dipilih, relasiDipilih, onSimpul, onRelasi, lebarPanel = 0 }: Props) {
+  const LEBAR = 1960;
   const titik = useMemo(() => susunWaktu(), []);
-  // Kanvas selebar 2400px diperkecil agar seluruh garis waktu muat di layar; dihitung setelah mount
+  // Kanvas selebar 1960px diperkecil agar seluruh garis waktu muat di layar; dihitung setelah mount
   // supaya HTML dari server dan klien tetap sama.
   const gulir = useRef<HTMLDivElement>(null);
   const [skala, setSkala] = useState(1);
   useEffect(() => {
     const el = gulir.current;
     if (!el) return;
-    const hitung = () => setSkala(Math.max(0.5, Math.min(1, el.clientWidth / 2400)));
+    const hitung = () => setSkala(Math.max(0.5, Math.min(1, (el.clientWidth - lebarPanel) / LEBAR)));
     hitung();
     const ro = new ResizeObserver(hitung);
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [lebarPanel]);
   const tetangga = new Set(dipilih ? [dipilih] : []);
   terlihat.forEach(({ r }) => {
     if (r.dari === dipilih) tetangga.add(r.ke);
@@ -53,8 +55,8 @@ export function WaktuView({ terlihat, dipilih, relasiDipilih, onSimpul, onRelasi
           <div className="waktu-era waktu-era-kuno">{ZAMAN[0].label}</div>
           <div className="waktu-era waktu-era-modern">{ZAMAN[1].label}</div>
           <div className="waktu-era waktu-era-kini">{ZAMAN[2].label}</div>
-          <svg className="waktu-lines" viewBox="0 0 2400 940" aria-label="Relasi antar karya pada garis waktu">
-            <path d="M 60 470 H 450 M 530 470 H 760 M 840 470 H 2340" className="waktu-axis" />
+          <svg className="waktu-lines" viewBox="0 0 1960 940" aria-label="Relasi antar karya pada garis waktu">
+            <path d="M 60 470 H 450 M 530 470 H 760 M 840 470 H 1900" className="waktu-axis" />
             {terlihat.map(({ r, i }) => {
               const a = titik.find((t) => t.simpul.id === r.dari);
               const b = titik.find((t) => t.simpul.id === r.ke);

@@ -250,14 +250,14 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 50; pointer-event
 .waktu-legend { flex: 0 0 auto; }
 .waktu-swatch { display: inline-block; width: 14px; height: 10px; border: 2px solid var(--foreground); background: var(--card); }
 .waktu-scroll { flex: 1 1 auto; min-height: 0; overflow: auto; }
-.waktu-horizontal { position: relative; width: 2400px; height: 940px; }
+.waktu-horizontal { position: relative; width: 1960px; height: 940px; }
 .waktu-mobile { display: none; padding: 16px; }
 .waktu-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
 .waktu-era { position: absolute; top: 20px; font-family: Georgia, serif; font-variant-caps: small-caps; font-size: 20px; font-weight: 600; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
 .waktu-era-kuno { left: 60px; width: 390px; }
 .waktu-era-modern { left: 530px; width: 230px; }
-.waktu-era-kini { left: 840px; width: 1500px; }
-.waktu-lines { position: absolute; inset: 0; width: 2400px; height: 940px; overflow: visible; }
+.waktu-era-kini { left: 840px; width: 1060px; }
+.waktu-lines { position: absolute; inset: 0; width: 1960px; height: 940px; overflow: visible; }
 .waktu-axis { stroke: var(--foreground); stroke-width: 1.5; fill: none; }
 .waktu-stem { stroke: var(--border); stroke-width: 1; }
 .waktu-dot { fill: var(--foreground); }
