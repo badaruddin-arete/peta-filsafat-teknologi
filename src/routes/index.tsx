@@ -42,12 +42,17 @@ const kolomDari = (id: string) => kelompokUrut.indexOf(simpul.find((s) => s.id =
 function LengkungEdge({ id, sourceX, sourceY, targetX, targetY, style, markerEnd, interactionWidth }: EdgeProps) {
   const off = 60 + Math.abs(targetY - sourceY) * 0.35;
   const path = `M ${sourceX} ${sourceY} C ${sourceX + off} ${sourceY}, ${targetX + off} ${targetY}, ${targetX} ${targetY}`;
-  return <BaseEdge id={id} path={path} style={style} markerEnd={markerEnd} interactionWidth={interactionWidth ?? 20} />;
+  return <BaseEdge id={id} path={path} style={style} {...(markerEnd ? { markerEnd } : {})} interactionWidth={interactionWidth ?? 20} />;
 }
 const edgeTypes = { lengkung: LengkungEdge };
 
-function TombolPusat() {
+function TombolPusat({ panelBuka }: { panelBuka: boolean }) {
   const { fitView } = useReactFlow();
+  // Ukuran kanvas berubah saat panel samping dibuka/ditutup; pusatkan ulang setelahnya.
+  useEffect(() => {
+    const t = setTimeout(() => fitView({ ...FIT, duration: 300 }), 60);
+    return () => clearTimeout(t);
+  }, [panelBuka, fitView]);
   return (
     <Panel position="top-right">
       <button onClick={() => fitView({ ...FIT, duration: 400 })}
@@ -192,7 +197,7 @@ function Index() {
           >
             <Background gap={24} size={1} />
             <Controls showInteractive={false} fitViewOptions={FIT} />
-            <TombolPusat />
+            <TombolPusat panelBuka={!!pilih} />
           </ReactFlow>
         </div>
         {pilih && (
