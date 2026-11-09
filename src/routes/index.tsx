@@ -37,10 +37,6 @@ const ROW_H = 150;
 const NODE_W = 200;
 const FIT = { padding: 0.15 };
 const kolomDari = (id: string) => kelompokUrut.indexOf(simpul.find((s) => s.id === id)?.kelompok ?? "");
-const barisDari = (id: string) => {
-  const s = simpul.find((x) => x.id === id);
-  return s ? simpul.filter((x) => x.kelompok === s.kelompok).indexOf(s) : 0;
-};
 
 // Relasi dalam satu kolom: lengkung keluar ke sisi kanan kolom agar tidak menembus simpul di antaranya.
 function LengkungEdge({ id, sourceX, sourceY, targetX, targetY, style, markerEnd, interactionWidth }: EdgeProps) {
