@@ -42,7 +42,7 @@ const kolomDari = (id: string) => kelompokUrut.indexOf(simpul.find((s) => s.id =
 function LengkungEdge({ id, sourceX, sourceY, targetX, targetY, style, markerEnd, interactionWidth }: EdgeProps) {
   const off = 60 + Math.abs(targetY - sourceY) * 0.35;
   const path = `M ${sourceX} ${sourceY} C ${sourceX + off} ${sourceY}, ${targetX + off} ${targetY}, ${targetX} ${targetY}`;
-  return <BaseEdge id={id} path={path} style={style} markerEnd={markerEnd} interactionWidth={interactionWidth} />;
+  return <BaseEdge id={id} path={path} style={style} markerEnd={markerEnd} interactionWidth={interactionWidth ?? 20} />;
 }
 const edgeTypes = { lengkung: LengkungEdge };
 
