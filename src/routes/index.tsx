@@ -185,8 +185,8 @@ function Index() {
         </p>
       </section>
 
-      <main className="relative flex flex-1 min-h-[70vh]">
-        <div className="flex-1">
+      <main className="relative flex flex-1 min-h-[70vh] overflow-hidden">
+        <div className="relative min-w-0 flex-1">
           <ReactFlow
             nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} fitView fitViewOptions={FIT} colorMode={dark ? "dark" : "light"}
             nodesDraggable={false} nodesConnectable={false}
