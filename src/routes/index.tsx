@@ -90,7 +90,7 @@ const nodeTypes = { pemikir: PemikirNode };
 
 type Pilihan = { tipe: "simpul"; id: string } | { tipe: "relasi"; idx: number } | null;
 
-function Index() {
+export function Index() {
   const [aktif, setAktif] = useState<Set<string>>(new Set(Object.keys(JENIS)));
   const [tematik, setTematik] = useState(true);
   const [pilih, setPilih] = useState<Pilihan>(null);
@@ -118,7 +118,7 @@ function Index() {
   const nodes: PNode[] = useMemo(() => {
     const out: PNode[] = kelompokUrut.map((k, c) => ({
       id: `h-${k}`, type: "pemikir", position: { x: c * COL_W, y: 0 }, style: { cursor: "default" }, selectable: false, draggable: false,
-      data: { nama: `${ROMAWI[c]}. ${KELOMPOK[k]?.label ?? k}`, color: "", dim: false, header: true, dividerHeight: c < kelompokUrut.length - 1 ? 580 : undefined },
+      data: { nama: `${ROMAWI[c]}. ${KELOMPOK[k]?.label ?? k}`, color: "", dim: false, header: true, ...(c < kelompokUrut.length - 1 ? { dividerHeight: 580 } : {}) },
     }));
     kelompokUrut.forEach((k, c) => {
       simpul.filter((s) => s.kelompok === k).forEach((s, row) => {

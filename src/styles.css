@@ -196,11 +196,20 @@
   --background: oklch(0.24 0.025 65);
   --foreground: oklch(0.89 0.033 86);
   --card: oklch(0.28 0.024 65);
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
   --primary: oklch(0.72 0.06 130);
   --primary-foreground: var(--background);
   --secondary: oklch(0.32 0.024 65);
+  --secondary-foreground: var(--foreground);
+  --muted: var(--secondary);
+  --accent: var(--secondary);
+  --accent-foreground: var(--foreground);
   --muted-foreground: oklch(0.72 0.028 80);
   --border: oklch(0.44 0.03 70);
+  --input: var(--border);
+  --ring: var(--primary);
   --teal: var(--primary); --violet: oklch(0.72 0.065 280);
   --r-memengaruhi: oklch(0.71 0.06 130);
   --r-mengkritik: oklch(0.68 0.08 15);
@@ -210,7 +219,7 @@
   --r-tematik: oklch(0.59 0.015 75);
 }
 body { font-family: var(--font-sans); letter-spacing: 0; }
-body::after { content: ""; position: fixed; inset: 0; z-index: 50; pointer-events: none; opacity: 0.045; background-image: url('/paper-grain.png'); }
+body::after { content: ""; position: fixed; inset: 0; z-index: 50; pointer-events: none; opacity: 0.018; background-image: url('/paper-grain.png'); }
 .book-title { font-variant-caps: small-caps; border-bottom: 3px double var(--foreground); padding-bottom: 18px; }
 .small-label { font-family: Georgia, serif; text-transform: uppercase; letter-spacing: 0.12em; }
 .tradition-heading { position: relative; font-variant-caps: small-caps; text-align: center; }
