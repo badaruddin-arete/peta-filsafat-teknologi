@@ -1,0 +1,271 @@
+{
+  "versi": "0.1",
+  "catatan": "Data Tahap B. Setiap pertanyaan memetakan posisi pemikir yang sudah ada di peta (peta.json). Kategori 'tekstual' berarti posisi dinyatakan atau dapat dikutip dari sumber; 'tafsiran' berarti penyusun menarik kesimpulan dan wajib menyatakan alasannya. Kutipan memakai bahasa asli sumber dan sengaja pendek.",
+  "pertanyaan": [
+    {
+      "id": "netralitas",
+      "teks": "Apakah teknologi bersifat netral?",
+      "pengantar": "Pandangan umum menganggap teknologi sebagai alat yang baik atau buruk tergantung pemakainya. Pertanyaan ini menguji anggapan tersebut.",
+      "pilihan_sikap": [
+        {"id": "netral_alat", "label": "Netral: hanya alat"},
+        {"id": "tidak_netral", "label": "Tidak netral: membawa nilai atau politik"}
+      ],
+      "posisi": [
+        {
+          "pemikir": "winner",
+          "sikap": "tidak_netral",
+          "kategori": "tekstual",
+          "ringkasan": "Artefak dapat memuat politik: lewat rancangan yang menyelesaikan suatu persoalan dalam komunitas, atau karena sistem teknis menuntut hubungan politik tertentu. Winner mengisahkan jembatan layang rendah Robert Moses sebagai contoh rancangan yang menyaring siapa yang dapat lewat.",
+          "kutipan": "the adoption of a given technical system actually requires the creation and maintenance of a particular set of social conditions",
+          "sumber": [{"judul": "Winner, Do Artifacts Have Politics? (Daedalus, 1980)", "url": "https://www.amacad.org/publication/daedalus/artifacts-politics"}],
+          "status": "terverifikasi"
+        },
+        {
+          "pemikir": "feenberg",
+          "sikap": "tidak_netral",
+          "kategori": "tekstual",
+          "ringkasan": "Teori instrumental, yang memandang teknologi sebagai alat netral, disebut Feenberg sebagai pandangan dominan pemerintah modern dan ilmu kebijakan; teori kritis teknologi menolaknya dan memandang teknologi sebagai arena perebutan sosial.",
+          "kutipan": "rejects the neutrality of technology",
+          "sumber": [{"judul": "Feenberg, Critical Theory of Technology, bab 1 (hlm. 6 dan 12; nomor halaman perkiraan)", "url": "https://www.sfu.ca/~andrewf/books/critical_theory_of_technology.pdf"}],
+          "status": "terverifikasi"
+        },
+        {
+          "pemikir": "heidegger",
+          "sikap": "tidak_netral",
+          "kategori": "tekstual",
+          "ringkasan": "Definisi instrumental teknologi itu benar tetapi belum menyentuh hakikatnya. Memandang teknologi sebagai sesuatu yang netral justru membuat manusia paling tak berdaya terhadapnya.",
+          "kutipan": "we are delivered over to it in the worst possible way when we regard it as something neutral",
+          "sumber": [{"judul": "Heidegger, The Question Concerning Technology (teks lengkap; terjemahan Lovitt)", "url": "https://cs.gettysburg.edu/~duncjo01/assets/writings/library/question_concerning_technology.html"}],
+          "status": "terverifikasi"
+        },
+        {
+          "pemikir": "verbeek",
+          "sikap": "tidak_netral",
+          "kategori": "tafsiran",
+          "alasan": "SEP mencatat bahwa Verbeek mengikuti tesis bahwa teknologi memediasi tindakan manusia. Penyusun menyimpulkan bahwa tesis mediasi tidak sejalan dengan netralitas; sumber yang dibuka tidak mengutip Verbeek memakai istilah 'netral'.",
+          "ringkasan": "Teknologi membentuk tindakan dan persepsi manusia, sehingga tidak dapat dipandang sebagai perantara pasif.",
+          "sumber": [
+            {"judul": "Stanford Encyclopedia of Philosophy, Philosophy of Technology (bagian 3.2.1)", "url": "https://plato.stanford.edu/entries/technology/"},
+            {"judul": "Penn State University Press, What Things Do (deskripsi penerbit)", "url": "https://www.psupress.org/books/titles/0-271-02539-5.html"}
+          ],
+          "status": "terverifikasi"
+        }
+      ],
+      "pandangan_pembanding": [
+        {
+          "nama": "Joseph Pitt (menurut SEP)",
+          "sikap": "netral_alat",
+          "ringkasan": "Produk teknologi adalah 'benda mati' yang tidak mengandung nilai; nilai ada pada pemakainya. SEP mencatat bahwa pandangan sebaliknya (teknologi sarat nilai) adalah posisi mayoritas.",
+          "sumber": [{"judul": "Stanford Encyclopedia of Philosophy, Philosophy of Technology (bagian 2.3 dan 3.2.1)", "url": "https://plato.stanford.edu/entries/technology/"}]
+        }
+      ]
+    },
+    {
+      "id": "alam",
+      "teks": "Bagaimana teknologi berhubungan dengan alam?",
+      "pengantar": "Tiga jawaban dari tiga zaman: teknik sebagai penyempurna alam, sebagai penguasa alam, dan sebagai cara menyingkap alam.",
+      "pilihan_sikap": [
+        {"id": "melengkapi_meniru", "label": "Melengkapi dan meniru alam"},
+        {"id": "menguasai", "label": "Menguasai alam"},
+        {"id": "menyingkap", "label": "Menyingkap alam"}
+      ],
+      "posisi": [
+        {
+          "pemikir": "aristoteles",
+          "sikap": "melengkapi_meniru",
+          "kategori": "tekstual",
+          "ringkasan": "Seni (teknik) menyelesaikan apa yang tidak dapat disempurnakan alam, dan sebagian lagi meniru alam. Rumah yang dibuat alam akan terbentuk dengan cara yang sama seperti yang dibuat seni.",
+          "kutipan": "Generally art partly completes what nature cannot bring to a finish, and partly imitates her.",
+          "sumber": [
+            {"judul": "Aristotle, Physics, Buku II (terjemahan Hardie & Gaye; pembahasan sebab final di Buku II bab 8 menurut rujukan SEP)", "url": "https://www.ellopos.net/elpenor/greek-texts/ancient-greece/aristotle/physics.asp?pg=41"},
+            {"judul": "Stanford Encyclopedia of Philosophy, Aristotle on Causality", "url": "https://plato.stanford.edu/ENTRIES/aristotle-causality/"}
+          ],
+          "status": "terverifikasi"
+        },
+        {
+          "pemikir": "bacon",
+          "sikap": "menguasai",
+          "kategori": "tekstual",
+          "ringkasan": "Pengetahuan dan kekuasaan manusia bertemu pada satu hal. Metode baru bertujuan menaklukkan alam dalam praktik dan menghasilkan karya, bukan sekadar argumen.",
+          "kutipan": "human knowledge and human power come to the same thing",
+          "sumber": [{"judul": "Stanford Encyclopedia of Philosophy, Francis Bacon (bagian 3 dan 4.2)", "url": "https://plato.stanford.edu/entries/francis-bacon/"}],
+          "status": "terverifikasi"
+        },
+        {
+          "pemikir": "heidegger",
+          "sikap": "menyingkap",
+          "kategori": "tekstual",
+          "ringkasan": "Teknik pada dasarnya cara menyingkap (aletheuein). Teknologi modern menyingkap alam dengan cara khusus yang disebut Enframing, yaitu memperlakukannya sebagai persediaan (standing-reserve).",
+          "kutipan": "Enframing means that way of revealing which holds sway in the essence of modern technology",
+          "sumber": [{"judul": "Heidegger, The Question Concerning Technology (teks lengkap; terjemahan Lovitt)", "url": "https://cs.gettysburg.edu/~duncjo01/assets/writings/library/question_concerning_technology.html"}],
+          "status": "terverifikasi"
+        }
+      ],
+      "pandangan_pembanding": []
+    },
+    {
+      "id": "agensi",
+      "teks": "Siapa atau apa yang bertindak ketika manusia memakai teknologi?",
+      "pengantar": "Pandangan instrumental menempatkan agensi hanya pada manusia. Tiga pemikir di peta mempersoalkannya dengan tingkat radikalitas berbeda.",
+      "pilihan_sikap": [
+        {"id": "hanya_manusia", "label": "Hanya manusia yang bertindak"},
+        {"id": "simetris", "label": "Manusia dan non-manusia setara sebagai aktor"},
+        {"id": "termediasi", "label": "Tindakan dimediasi teknologi, tanpa simetri penuh"}
+      ],
+      "posisi": [
+        {
+          "pemikir": "latour",
+          "sikap": "simetris",
+          "kategori": "tekstual",
+          "ringkasan": "Agensi manusia dan agensi teknologi dipandang simetris; yang sosial adalah rangkaian asosiasi antara aktor manusia dan bukan manusia.",
+          "sumber": [{"judul": "Stanford Encyclopedia of Philosophy, Philosophy of Technology (bagian 3.2.1)", "url": "https://plato.stanford.edu/entries/technology/"}],
+          "status": "terverifikasi"
+        },
+        {
+          "pemikir": "verbeek",
+          "sikap": "termediasi",
+          "kategori": "tekstual",
+          "ringkasan": "Teknologi memediasi tindakan manusia secara signifikan, tetapi Verbeek menolak simetri penuh antara agensi moral manusia dan agensi teknologi.",
+          "sumber": [{"judul": "Stanford Encyclopedia of Philosophy, Philosophy of Technology (bagian 1 dan 3.2.1)", "url": "https://plato.stanford.edu/entries/technology/"}],
+          "status": "terverifikasi"
+        },
+        {
+          "pemikir": "ihde",
+          "sikap": "termediasi",
+          "kategori": "tekstual",
+          "ringkasan": "Teknologi adalah mediator antara manusia dan dunia: ia membentuk cara manusia mempersepsi dunia dan tindakan apa yang tampak mungkin.",
+          "sumber": [{"judul": "Stanford Encyclopedia of Philosophy, Philosophy of Technology (bagian 1 dan 3.1.2)", "url": "https://plato.stanford.edu/entries/technology/"}],
+          "status": "terverifikasi"
+        }
+      ],
+      "pandangan_pembanding": [
+        {
+          "nama": "Pandangan instrumental (tesis netralitas, menurut SEP)",
+          "sikap": "hanya_manusia",
+          "ringkasan": "Teknologi adalah instrumen netral yang dapat dipakai untuk tujuan baik atau buruk oleh pemakainya; tindakan dan tanggung jawab sepenuhnya ada pada manusia.",
+          "sumber": [{"judul": "Stanford Encyclopedia of Philosophy, Philosophy of Technology (bagian 3.1)", "url": "https://plato.stanford.edu/entries/technology/"}]
+        }
+      ]
+    },
+    {
+      "id": "arah",
+      "teks": "Siapa yang semestinya mengarahkan perkembangan teknologi?",
+      "pengantar": "Jika teknologi tidak netral, muncul pertanyaan politik: apakah arahnya dapat ditentukan bersama, atau ia sudah melampaui kendali pilihan kita?",
+      "pilihan_sikap": [
+        {"id": "dapat_didemokratisasi", "label": "Dapat dan perlu diarahkan secara demokratis"},
+        {"id": "melampaui_kendali", "label": "Melampaui kendali pilihan langsung"}
+      ],
+      "posisi": [
+        {
+          "pemikir": "feenberg",
+          "sikap": "dapat_didemokratisasi",
+          "kategori": "tekstual",
+          "ringkasan": "Teknologi bukan takdir melainkan arena perebutan; masalah yang dikaitkan dengan teknologi berakar pada nilai-nilai antidemokratis yang mengatur pengembangannya, sehingga demokratisasi radikal dimungkinkan oleh hakikat teknologi itu sendiri.",
+          "kutipan": "technology is not a destiny but a scene of struggle",
+          "sumber": [
+            {"judul": "Feenberg, Critical Theory of Technology, bab 1 (hlm. 5, 12, dan 15; nomor halaman perkiraan)", "url": "https://www.sfu.ca/~andrewf/books/critical_theory_of_technology.pdf"},
+            {"judul": "Stanford Encyclopedia of Philosophy, Philosophy of Technology (bagian 3.2.4)", "url": "https://plato.stanford.edu/entries/technology/"}
+          ],
+          "status": "terverifikasi"
+        },
+        {
+          "pemikir": "heidegger",
+          "sikap": "melampaui_kendali",
+          "kategori": "tafsiran",
+          "alasan": "Feenberg menggolongkan Heidegger sebagai teori substantif yang menganggap teknologi kekuatan budaya otonom. Itu pembacaan Feenberg; Heidegger sendiri menyebut 'saving power' dan menunjuk seni sebagai ranah perenungan, sehingga penempatan ini adalah tafsiran yang dapat diperdebatkan.",
+          "ringkasan": "Dalam pembacaan Feenberg, bahaya teknologi modern bersumber dari cara pengungkapan (Enframing) yang tidak dapat diputuskan begitu saja lewat pilihan politik. Heidegger tetap membuka kemungkinan jalan keluar lewat perenungan, bukan kebijakan.",
+          "kutipan": "But where danger is, grows The saving power also.",
+          "sumber": [
+            {"judul": "Feenberg, Critical Theory of Technology, bab 1 (hlm. 6 sampai 7; nomor halaman perkiraan)", "url": "https://www.sfu.ca/~andrewf/books/critical_theory_of_technology.pdf"},
+            {"judul": "Heidegger, The Question Concerning Technology (teks lengkap; terjemahan Lovitt)", "url": "https://cs.gettysburg.edu/~duncjo01/assets/writings/library/question_concerning_technology.html"}
+          ],
+          "status": "terverifikasi"
+        }
+      ],
+      "pandangan_pembanding": []
+    },
+    {
+      "id": "adopsi",
+      "teks": "Mengapa sebuah teknologi diadopsi orang atau organisasi?",
+      "pengantar": "Pertanyaan jembatan ke manajemen teknologi. Penelitian adopsi biasanya memperlakukan teknologi sebagai sesuatu yang sudah jadi; dua pemikir filsafat di bawah dihubungkan ke sana sebagai tafsiran penyusun, bukan klaim mereka tentang adopsi.",
+      "pilihan_sikap": [
+        {"id": "difusi_sosial", "label": "Difusi dalam sistem sosial"},
+        {"id": "persepsi_pengguna", "label": "Persepsi pengguna atas manfaat dan kemudahan"},
+        {"id": "teknologi_ikut_membentuk", "label": "Teknologi ikut membentuk apa yang mungkin bagi pengguna"},
+        {"id": "perebutan_sosial", "label": "Hasil perebutan kepentingan sosial"}
+      ],
+      "posisi": [
+        {
+          "pemikir": "rogers",
+          "sikap": "difusi_sosial",
+          "kategori": "tekstual",
+          "ringkasan": "Peluang adopsi dipengaruhi ciri inovasi (keuntungan relatif, kesesuaian, kerumitan, dan lainnya), dan difusi terjadi lewat saluran komunikasi dalam sistem sosial seiring waktu. Pengguna dikelompokkan menurut waktu adopsinya, dari inovator hingga adopter akhir.",
+          "sumber": [{"judul": "Encyclopaedia Britannica, Diffusion of innovations", "url": "https://www.britannica.com/topic/diffusion-of-innovations"}],
+          "status": "terverifikasi"
+        },
+        {
+          "pemikir": "davis",
+          "sikap": "persepsi_pengguna",
+          "kategori": "tekstual",
+          "ringkasan": "Dalam dua studi, persepsi kegunaan berkorelasi lebih kuat dengan pemakaian dibandingkan persepsi kemudahan penggunaan (r = 0,63 versus 0,45 pada studi 1; 0,85 versus 0,59 pada studi 2).",
+          "sumber": [{"judul": "Davis (1989), MIS Quarterly 13(3), 319-340 (abstrak)", "url": "https://verdi.cs.ucl.ac.uk/constructDB/publications/davis-perceived-1989.html"}],
+          "status": "terverifikasi"
+        },
+        {
+          "pemikir": "verbeek",
+          "sikap": "teknologi_ikut_membentuk",
+          "kategori": "tafsiran",
+          "alasan": "Verbeek tidak meneliti adopsi. Penyusun menarik implikasi: bila teknologi membentuk persepsi dan tindakan yang tampak mungkin, maka alasan adopsi tidak sepenuhnya berasal dari persepsi pengguna yang sudah ada.",
+          "ringkasan": "Teknologi membentuk bagaimana pengguna mempersepsi dunia dan tindakan apa yang tampak mungkin, sehingga pengguna dan teknologi saling membentuk.",
+          "sumber": [
+            {"judul": "Stanford Encyclopedia of Philosophy, Philosophy of Technology (bagian 3.1.2)", "url": "https://plato.stanford.edu/entries/technology/"},
+            {"judul": "Penn State University Press, What Things Do (deskripsi penerbit)", "url": "https://www.psupress.org/books/titles/0-271-02539-5.html"}
+          ],
+          "status": "terverifikasi"
+        },
+        {
+          "pemikir": "feenberg",
+          "sikap": "perebutan_sosial",
+          "kategori": "tafsiran",
+          "alasan": "Feenberg tidak membahas adopsi secara khusus. Penyusun menarik implikasi dari tesisnya bahwa teknologi adalah arena perebutan: penerimaan suatu teknologi bisa mencerminkan kepentingan yang bersaing, bukan sekadar penilaian manfaat.",
+          "ringkasan": "Teknologi adalah 'parlemen benda-benda' tempat kepentingan sosial bersaing, sehingga penerimaannya tidak otomatis mencerminkan manfaat netral.",
+          "kutipan": "a parliament of things",
+          "sumber": [{"judul": "Feenberg, Critical Theory of Technology, bab 1 (hlm. 12; nomor halaman perkiraan)", "url": "https://www.sfu.ca/~andrewf/books/critical_theory_of_technology.pdf"}],
+          "status": "terverifikasi"
+        }
+      ],
+      "pandangan_pembanding": []
+    },
+    {
+      "id": "diri",
+      "teks": "Bagaimana teknologi mengubah kemampuan dan pemahaman manusia tentang dirinya?",
+      "pengantar": "Dua rumusan yang terpaut ribuan tahun: kekhawatiran bahwa alat mengikis kemampuan, dan klaim bahwa teknologi informasi mengubah cara kita memahami diri.",
+      "pilihan_sikap": [
+        {"id": "mengikis_kemampuan", "label": "Dapat mengikis kemampuan manusia"},
+        {"id": "mengubah_pemahaman_diri", "label": "Mengubah pemahaman manusia tentang dirinya"}
+      ],
+      "posisi": [
+        {
+          "pemikir": "plato",
+          "sikap": "mengikis_kemampuan",
+          "kategori": "tafsiran",
+          "alasan": "Kalimat ini diucapkan Raja Thamus dalam mitos yang dikisahkan Socrates dalam dialog Phaedrus. Menganggapnya pandangan Plato sendiri adalah tafsiran yang lazim, bukan pernyataan langsung Plato.",
+          "ringkasan": "Tulisan, penemuan Theuth, menurut Thamus akan menimbulkan kelupaan karena orang tidak lagi melatih ingatannya; ia hanya bantuan untuk mengingat kembali, bukan ingatan itu sendiri.",
+          "kutipan": "they will trust to the external written characters and not remember of themselves",
+          "sumber": [{"judul": "Plato, Phaedrus (terjemahan Jowett, kisah Theuth dan Thamus)", "url": "https://users.pfw.edu/dfleming/PlatoPhaedrus.htm"}],
+          "status": "terverifikasi"
+        },
+        {
+          "pemikir": "floridi",
+          "sikap": "mengubah_pemahaman_diri",
+          "kategori": "tekstual",
+          "ringkasan": "Teknologi informasi dan komunikasi bukan lagi sekadar alat; ia telah menjadi kekuatan lingkungan, antropologis, sosial, dan interpretatif. Floridi menyebutnya revolusi keempat dalam pemahaman diri, setelah revolusi Copernicus, Darwin, dan Freud.",
+          "kutipan": "a fourth revolution in our self-understanding",
+          "sumber": [{"judul": "Floridi, The Fourth Revolution (Oxford University Press, 2014), kata pengantar (hlm. vi dan ix)", "url": "https://issc.al.uw.edu.pl/wp-content/uploads/sites/2/2022/05/Luciano-Floridi-The-Fourth-Revolution_-How-the-infosphere-is-reshaping-human-reality-Oxford-University-Press-2014.pdf"}],
+          "status": "terverifikasi"
+        }
+      ],
+      "pandangan_pembanding": []
+    }
+  ]
+}
