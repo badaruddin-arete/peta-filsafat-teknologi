@@ -205,16 +205,7 @@ function TampilanTradisi({ simpulAwal, dark }: { simpulAwal: string; dark: boole
     setAktif((p) => { const n = new Set(p); n.has(j) ? n.delete(j) : n.add(j); return n; });
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-background text-foreground">
-      <header className="title-page relative px-6 pb-2 pt-4 text-center md:px-16">
-        <Button variant="ghost" size="icon" className="absolute right-3 top-3" onClick={() => setDark((v) => !v)} aria-label={dark ? "Mode terang" : "Mode gelap"} title={dark ? "Mode terang" : "Mode gelap"}>
-          {dark ? <Sun /> : <Moon />}
-        </Button>
-        <h1 className="book-title mx-auto max-w-3xl font-serif text-2xl font-semibold md:text-3xl">Peta Pemikiran Filsafat Teknologi</h1>
-        <blockquote className="mt-2 text-base italic">“The essence of technology is by no means anything technological.”</blockquote>
-        <p className="mt-0.5 text-xs text-muted-foreground">Martin Heidegger, <em>The Question Concerning Technology</em> (1954)</p>
-      </header>
-
+    <>
       <section className="flex flex-wrap items-center gap-x-4 gap-y-1 border-y border-border px-6 py-1.5">
         <h2 className="small-label mr-1 text-[11px]">Cara membaca</h2>
         {Object.entries(JENIS).map(([j, v]) => {
@@ -257,11 +248,7 @@ function TampilanTradisi({ simpulAwal, dark }: { simpulAwal: string; dark: boole
           </aside>
         )}
       </main>
-
-      <footer className="border-t border-border px-5 py-4 text-xs text-muted-foreground">
-        Data dikurasi manual dan setiap relasi bersumber. Kerangka dan kode dibuat dengan bantuan AI (Claude dan Lovable). Hak cipta dilindungi.
-      </footer>
-    </div>
+    </>
   );
 }
 
