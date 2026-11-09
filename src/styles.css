@@ -153,3 +153,36 @@
     color: var(--color-foreground);
   }
 }
+
+@theme inline {
+  --font-serif: "Source Serif 4", Georgia, serif;
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --color-teal: var(--teal);
+  --color-violet: var(--violet);
+}
+:root {
+  --background: oklch(0.985 0.006 95);
+  --foreground: oklch(0.24 0.02 250);
+  --card: oklch(1 0 0);
+  --primary: oklch(0.52 0.09 190);
+  --primary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.95 0.01 95);
+  --muted-foreground: oklch(0.5 0.02 250);
+  --border: oklch(0.9 0.01 95);
+  --teal: oklch(0.55 0.1 190);
+  --violet: oklch(0.5 0.15 295);
+  --g-klasik: oklch(0.72 0.1 70); --g-fen: oklch(0.6 0.1 190); --g-jej: oklch(0.6 0.13 145);
+  --g-info: oklch(0.6 0.13 250); --g-kuasa: oklch(0.58 0.16 20); --g-man: oklch(0.55 0.14 295);
+  --r-memengaruhi: oklch(0.55 0.12 190); --r-mengkritik: oklch(0.58 0.2 25);
+  --r-membangun: oklch(0.5 0.15 295); --r-menafsirkan: oklch(0.65 0.14 65);
+  --r-merujuk: oklch(0.55 0.13 250); --r-tematik: oklch(0.6 0.02 250);
+}
+.dark {
+  --background: oklch(0.18 0.015 250); --foreground: oklch(0.93 0.01 95);
+  --card: oklch(0.22 0.015 250); --muted: oklch(0.26 0.015 250);
+  --muted-foreground: oklch(0.7 0.02 250); --border: oklch(0.32 0.015 250);
+  --primary: oklch(0.7 0.1 190); --primary-foreground: oklch(0.18 0.015 250);
+  --teal: oklch(0.72 0.1 190); --violet: oklch(0.72 0.13 295);
+}
+body { font-family: var(--font-sans); }
+.react-flow { --xy-background-color: transparent; }
