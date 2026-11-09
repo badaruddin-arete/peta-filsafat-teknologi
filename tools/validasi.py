@@ -108,6 +108,21 @@ class Peta(BaseModel):
         if kembar:
             raise ValueError(f"relasi kembar: {kembar}")
 
+        # Pemeriksaan anakronisme berdasarkan tahun karya rujukan: sebuah karya tidak
+        # dapat mengkritik, membangun di atas, menafsirkan ulang, atau merujuk karya
+        # yang terbit sesudahnya. Relasi tematik dikecualikan karena memang tafsiran.
+        tahun = {s.id: s.karya_rujukan.tahun for s in self.simpul}
+        mundur = {"mengkritik", "membangun_di_atas", "menafsirkan_ulang", "merujuk"}
+        for r in self.relasi:
+            if r.jenis in mundur and tahun[r.dari] < tahun[r.ke]:
+                raise ValueError(
+                    f"anakronisme: {r.dari} ({tahun[r.dari]}) {r.jenis} {r.ke} ({tahun[r.ke]})"
+                )
+            if r.jenis == "memengaruhi" and tahun[r.dari] > tahun[r.ke]:
+                raise ValueError(
+                    f"anakronisme: {r.dari} ({tahun[r.dari]}) memengaruhi {r.ke} ({tahun[r.ke]})"
+                )
+
         terhubung = {r.dari for r in self.relasi} | {r.ke for r in self.relasi}
         yatim = sorted(dikenal - terhubung)
         if yatim:

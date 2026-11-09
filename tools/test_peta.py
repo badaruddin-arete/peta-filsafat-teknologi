@@ -123,3 +123,20 @@ def test_tahun_masa_depan_ditolak(mentah):
     data = _ubah(mentah, lambda d: d["simpul"][3]["karya_rujukan"].update(tahun=2099))
     with pytest.raises(ValidationError, match="melewati"):
         Peta.model_validate(data)
+
+
+def test_relasi_tekstual_tidak_anakronistik():
+    peta = muat()
+    tahun = {s.id: s.karya_rujukan.tahun for s in peta.simpul}
+    for r in peta.relasi:
+        if r.jenis in {"mengkritik", "membangun_di_atas", "menafsirkan_ulang", "merujuk"}:
+            assert tahun[r.dari] >= tahun[r.ke], (r.dari, r.ke)
+
+
+def test_kritik_terhadap_karya_yang_belum_terbit_ditolak(mentah):
+    def balik(d):
+        r = next(r for r in d["relasi"] if r["dari"] == "bacon" and r["ke"] == "aristoteles")
+        r["dari"], r["ke"] = "aristoteles", "bacon"
+
+    with pytest.raises(ValidationError, match="anakronisme"):
+        Peta.model_validate(_ubah(mentah, balik))

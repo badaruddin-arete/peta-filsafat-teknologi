@@ -19,14 +19,14 @@ Kesalahan atribusi ("A memengaruhi B" tanpa dasar) adalah kegagalan terburuk pet
 - Setiap relasi punya sumber, dan relasi berstatus `terverifikasi` wajib memuat URL pada setiap sumbernya.
 - Tahun sebelum 1000 harus ditandai perkiraan.
 
-Aturan ini diperiksa oleh [`tools/validasi.py`](tools/validasi.py) dan [`tools/validasi_pertanyaan.py`](tools/validasi_pertanyaan.py) dengan 30 tes: data tanpa sumber, simpul yatim, relasi kembar, tafsiran tanpa alasan, pemikir yang tidak ada di peta, kutipan terlalu panjang, dan pertanyaan yang hanya memuat satu sisi ditolak.
+Aturan ini diperiksa oleh [`tools/validasi.py`](tools/validasi.py) dan [`tools/validasi_pertanyaan.py`](tools/validasi_pertanyaan.py) dengan 32 tes: data tanpa sumber, simpul yatim, relasi kembar, relasi anakronistik (misalnya karya yang mengkritik karya yang terbit sesudahnya), tafsiran tanpa alasan, pemikir yang tidak ada di peta, kutipan terlalu panjang, dan pertanyaan yang hanya memuat satu sisi ditolak.
 
 ```bash
 cd tools
 pip install -r requirements.txt
 python validasi.py     # ringkasan data
 python validasi_pertanyaan.py
-python -m pytest -q    # 30 tes
+python -m pytest -q    # 32 tes
 ```
 
 ## Menjalankan antarmuka
