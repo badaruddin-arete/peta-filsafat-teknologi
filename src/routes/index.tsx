@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Moon, Sun, X } from "lucide-react";
 import { simpul, relasi, KELOMPOK, JENIS, formatTahun, namaSimpul } from "@/lib/peta";
 import { PertanyaanView } from "@/components/PertanyaanView";
+import { WaktuView } from "@/components/WaktuView";
 
 const cariSchema = z.object({
   tampilan: fallback(z.string(), "tradisi").default("tradisi"),
@@ -119,7 +120,7 @@ export function Index() {
       </header>
 
       <nav className="flex justify-center gap-8 px-6 pt-1" aria-label="Tampilan">
-        {([["tradisi", "I. Per Tradisi"], ["pertanyaan", "II. Per Pertanyaan"]] as const).map(([id, label]) => (
+        {([["tradisi", "I. Per Tradisi"], ["pertanyaan", "II. Per Pertanyaan"], ["waktu", "III. Garis Waktu"]] as const).map(([id, label]) => (
           <Link key={id} to="/" search={{ tampilan: id, simpul: "" }} aria-current={tampilan === id ? "page" : undefined}
             className={`small-label border-b-2 pb-1.5 text-xs ${tampilan === id ? "border-foreground text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
             {label}
@@ -127,7 +128,7 @@ export function Index() {
         ))}
       </nav>
 
-      {tampilan === "pertanyaan" ? <PertanyaanView /> : <TampilanTradisi simpulAwal={simpulParam} dark={dark} />}
+      {tampilan === "pertanyaan" ? <PertanyaanView /> : tampilan === "waktu" ? <TampilanWaktu /> : <TampilanTradisi simpulAwal={simpulParam} dark={dark} />}
 
       <footer className="border-t border-border px-5 py-4 text-xs text-muted-foreground">
         Data dikurasi manual dan setiap relasi bersumber. Kerangka dan kode dibuat dengan bantuan AI (Claude dan Lovable). Hak cipta dilindungi.
@@ -206,7 +207,36 @@ function TampilanTradisi({ simpulAwal, dark }: { simpulAwal: string; dark: boole
 
   return (
     <>
-      <section className="flex flex-wrap items-center gap-x-4 gap-y-1 border-y border-border px-6 py-1.5">
+      <BarisFilter aktif={aktif} toggle={toggle} tematik={tematik} setTematik={setTematik} />
+
+      <main className="relative flex min-h-0 flex-1 overflow-hidden">
+        <div className="relative min-w-0 flex-1">
+          <ReactFlow
+            nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} fitView fitViewOptions={FIT} minZoom={0.05} colorMode={dark ? "dark" : "light"}
+            nodesDraggable={false} nodesConnectable={false}
+            onNodeClick={(_, n) => !n.id.startsWith("h-") && setPilih({ tipe: "simpul", id: n.id })}
+            onEdgeClick={(_, e) => setPilih({ tipe: "relasi", idx: Number(e.id.slice(1)) })}
+            onPaneClick={() => setPilih(null)}
+            proOptions={{ hideAttribution: true }}
+          >
+            <Controls showInteractive={false} showFitView={false} />
+            <TombolPusat />
+          </ReactFlow>
+        </div>
+        {pilih && (
+          <aside className="notes-panel absolute bottom-0 right-0 top-0 z-20 w-[min(360px,90%)] overflow-y-auto border-l border-foreground/30 bg-card p-6">
+            <Button variant="ghost" size="icon" onClick={() => setPilih(null)} className="float-right -mr-3 -mt-3 text-muted-foreground" aria-label="Tutup"><X /></Button>
+            {pilih.tipe === "simpul" ? <PanelSimpul id={pilih.id} onPilih={setPilih} /> : <PanelRelasi idx={pilih.idx} />}
+          </aside>
+        )}
+      </main>
+    </>
+  );
+}
+
+function BarisFilter({ aktif, toggle, tematik, setTematik }: { aktif: Set<string>; toggle: (j: string) => void; tematik: boolean; setTematik: (v: boolean) => void }) {
+  return (
+    <section className="flex flex-wrap items-center gap-x-4 gap-y-1 border-y border-border px-6 py-1.5">
         <h2 className="small-label mr-1 text-[11px]">Cara membaca</h2>
         {Object.entries(JENIS).map(([j, v]) => {
           const on = aktif.has(j);
@@ -225,21 +255,33 @@ function TampilanTradisi({ simpulAwal, dark }: { simpulAwal: string; dark: boole
         <span className="text-[11px] text-muted-foreground">
           Garis penuh = relasi tekstual; putus-putus = tafsiran penyusun.
         </span>
-      </section>
+    </section>
+  );
+}
 
+// Garis Waktu: tahun karya rujukan dari peta.json; filter dan panel sama dengan tampilan Per Tradisi.
+function TampilanWaktu() {
+  const [aktif, setAktif] = useState<Set<string>>(new Set(Object.keys(JENIS)));
+  const [tematik, setTematik] = useState(true);
+  const [pilih, setPilih] = useState<Pilihan>(null);
+  const terlihat = useMemo(
+    () => relasi.map((r, i) => ({ r, i })).filter(({ r }) => aktif.has(r.jenis) && (tematik || r.kategori !== "tematik")),
+    [aktif, tematik],
+  );
+  const toggle = (j: string) =>
+    setAktif((p) => { const n = new Set(p); n.has(j) ? n.delete(j) : n.add(j); return n; });
+  return (
+    <>
+      <BarisFilter aktif={aktif} toggle={toggle} tematik={tematik} setTematik={setTematik} />
       <main className="relative flex min-h-0 flex-1 overflow-hidden">
-        <div className="relative min-w-0 flex-1">
-          <ReactFlow
-            nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} fitView fitViewOptions={FIT} minZoom={0.05} colorMode={dark ? "dark" : "light"}
-            nodesDraggable={false} nodesConnectable={false}
-            onNodeClick={(_, n) => !n.id.startsWith("h-") && setPilih({ tipe: "simpul", id: n.id })}
-            onEdgeClick={(_, e) => setPilih({ tipe: "relasi", idx: Number(e.id.slice(1)) })}
-            onPaneClick={() => setPilih(null)}
-            proOptions={{ hideAttribution: true }}
-          >
-            <Controls showInteractive={false} showFitView={false} />
-            <TombolPusat />
-          </ReactFlow>
+        <div className="relative flex min-w-0 flex-1 flex-col" onClick={(e) => { if (e.target === e.currentTarget) setPilih(null); }}>
+          <WaktuView
+            terlihat={terlihat}
+            {...(pilih?.tipe === "simpul" ? { dipilih: pilih.id } : {})}
+            {...(pilih?.tipe === "relasi" ? { relasiDipilih: pilih.idx } : {})}
+            onSimpul={(id) => setPilih({ tipe: "simpul", id })}
+            onRelasi={(idx) => setPilih({ tipe: "relasi", idx })}
+          />
         </div>
         {pilih && (
           <aside className="notes-panel absolute bottom-0 right-0 top-0 z-20 w-[min(360px,90%)] overflow-y-auto border-l border-foreground/30 bg-card p-6">

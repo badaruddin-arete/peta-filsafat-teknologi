@@ -235,3 +235,41 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 50; pointer-event
 .react-flow__controls { box-shadow: var(--shadow-paper); border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
 .react-flow__edge, .react-flow__edge-interaction { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) { * { transition-duration: 0s !important; } }
+
+/* Garis Waktu */
+:root {
+  --w-klasik_modern_awal: oklch(0.5 0.07 60); --w-fenomenologi: oklch(0.42 0.09 15);
+  --w-jejaring_relasional: oklch(0.46 0.06 130); --w-filsafat_informasi: oklch(0.43 0.065 280);
+  --w-teknologi_dan_kekuasaan: oklch(0.49 0.035 240); --w-manajemen_teknologi: oklch(0.56 0.09 80);
+}
+.dark {
+  --w-klasik_modern_awal: oklch(0.74 0.07 60); --w-fenomenologi: oklch(0.68 0.08 15);
+  --w-jejaring_relasional: oklch(0.71 0.06 130); --w-filsafat_informasi: oklch(0.7 0.065 280);
+  --w-teknologi_dan_kekuasaan: oklch(0.72 0.035 240); --w-manajemen_teknologi: oklch(0.75 0.09 80);
+}
+.waktu-legend { flex: 0 0 auto; }
+.waktu-swatch { display: inline-block; width: 14px; height: 10px; border: 2px solid var(--foreground); background: var(--card); }
+.waktu-scroll { flex: 1 1 auto; min-height: 0; overflow: auto; }
+.waktu-horizontal { position: relative; width: 2400px; height: 940px; }
+.waktu-mobile { display: none; padding: 16px; }
+.waktu-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.waktu-era { position: absolute; top: 20px; font-family: Georgia, serif; font-variant-caps: small-caps; font-size: 20px; font-weight: 600; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+.waktu-era-kuno { left: 60px; width: 390px; }
+.waktu-era-modern { left: 530px; width: 230px; }
+.waktu-era-kini { left: 840px; width: 1500px; }
+.waktu-lines { position: absolute; inset: 0; width: 2400px; height: 940px; overflow: visible; }
+.waktu-axis { stroke: var(--foreground); stroke-width: 1.5; fill: none; }
+.waktu-stem { stroke: var(--border); stroke-width: 1; }
+.waktu-dot { fill: var(--foreground); }
+.waktu-arc-hit { fill: none; stroke: transparent; stroke-width: 18; cursor: pointer; pointer-events: stroke; }
+.waktu-break { position: absolute; top: 452px; font-family: Georgia, serif; font-size: 22px; transform: translateX(-50%); color: var(--muted-foreground); }
+.waktu-position { position: absolute; width: 190px; }
+.waktu-card { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 190px; height: auto; white-space: normal; text-align: center; padding: 10px 8px; border-width: 2px; border-radius: 2px; background: var(--card); transition: opacity .15s; }
+.waktu-dim { opacity: 0.22; }
+.waktu-year { position: absolute; transform: translateX(-50%); font-family: Georgia, serif; font-size: 13px; color: var(--muted-foreground); background: var(--background); padding: 0 4px; white-space: nowrap; }
+.waktu-note { position: absolute; left: 60px; bottom: 14px; max-width: 900px; }
+@media (max-width: 768px) {
+  .waktu-horizontal { display: none; }
+  .waktu-mobile { display: block; }
+  .waktu-card { width: 100%; }
+}

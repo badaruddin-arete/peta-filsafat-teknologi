@@ -2,9 +2,10 @@
 
 Peta interaktif yang memperlihatkan hubungan antar pemikir filsafat teknologi, dari akar klasik (Aristoteles, Plato, Bacon) sampai teori adopsi teknologi dalam manajemen (Rogers, Davis). **Setiap hubungan dan setiap posisi wajib bersumber** dan dapat diperiksa lewat tautan.
 
-Dua tampilan:
+Tiga tampilan:
 - **I. Per Tradisi:** graf pemikir menurut tradisi dengan relasi bertipe (memengaruhi, mengkritik, membangun di atas, dan seterusnya).
 - **II. Per Pertanyaan:** enam pertanyaan yang menjembatani filsafat dan teknologi (misalnya "Apakah teknologi bersifat netral?"), dengan posisi tiap pemikir, kutipan pendek, dan sumbernya.
+- **III. Garis Waktu:** karya rujukan tiap pemikir pada sumbu waktu (skala dipatahkan antar zaman), dengan busur relasi yang sama. Tahun adalah tahun karya rujukan, bukan tahun hidup pemikir.
 
 **Demo:** https://peta-filsafat-teknologi.lovable.app
 

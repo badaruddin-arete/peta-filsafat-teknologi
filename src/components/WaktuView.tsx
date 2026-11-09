@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { KELOMPOK, JENIS, formatTahun, type Relasi, type Simpul } from "@/lib/peta";
 import { susunWaktu, ZAMAN } from "@/lib/waktu";
@@ -13,6 +13,19 @@ type Props = {
 
 export function WaktuView({ terlihat, dipilih, relasiDipilih, onSimpul, onRelasi }: Props) {
   const titik = useMemo(() => susunWaktu(), []);
+  // Kanvas selebar 2400px diperkecil agar seluruh garis waktu muat di layar; dihitung setelah mount
+  // supaya HTML dari server dan klien tetap sama.
+  const gulir = useRef<HTMLDivElement>(null);
+  const [skala, setSkala] = useState(1);
+  useEffect(() => {
+    const el = gulir.current;
+    if (!el) return;
+    const hitung = () => setSkala(Math.max(0.5, Math.min(1, el.clientWidth / 2400)));
+    hitung();
+    const ro = new ResizeObserver(hitung);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
   const tetangga = new Set(dipilih ? [dipilih] : []);
   terlihat.forEach(({ r }) => {
     if (r.dari === dipilih) tetangga.add(r.ke);
@@ -35,8 +48,8 @@ export function WaktuView({ terlihat, dipilih, relasiDipilih, onSimpul, onRelasi
           <span className="waktu-swatch" style={{ borderColor: `var(--w-${id})` }} />{k.label}
         </span>)}
       </div>
-      <div className="waktu-scroll">
-        <div className="waktu-horizontal">
+      <div className="waktu-scroll" ref={gulir}>
+        <div className="waktu-horizontal" style={{ zoom: skala }}>
           <div className="waktu-era waktu-era-kuno">{ZAMAN[0].label}</div>
           <div className="waktu-era waktu-era-modern">{ZAMAN[1].label}</div>
           <div className="waktu-era waktu-era-kini">{ZAMAN[2].label}</div>
@@ -47,14 +60,14 @@ export function WaktuView({ terlihat, dipilih, relasiDipilih, onSimpul, onRelasi
               const b = titik.find((t) => t.simpul.id === r.ke);
               if (!a || !b) return null;
               const dim = dipilih ? r.dari !== dipilih && r.ke !== dipilih : relasiDipilih !== undefined && relasiDipilih !== i;
-              const hauteur = Math.min(390, 65 + Math.abs(a.x - b.x) * 0.2 + (i % 3) * 22);
+              const tinggi = Math.min(390, 65 + Math.abs(a.x - b.x) * 0.2 + (i % 3) * 22);
               const path = a.x === b.x
-                ? `M ${a.x} 470 C ${a.x - 55} ${470 - hauteur}, ${a.x + 55} ${470 - hauteur}, ${b.x} 470`
-                : `M ${a.x} 470 C ${a.x} ${470 - hauteur}, ${b.x} ${470 - hauteur}, ${b.x} 470`;
+                ? `M ${a.x} 470 C ${a.x - 55} ${470 - tinggi}, ${a.x + 55} ${470 - tinggi}, ${b.x} 470`
+                : `M ${a.x} 470 C ${a.x} ${470 - tinggi}, ${b.x} ${470 - tinggi}, ${b.x} 470`;
               return <g key={i} className="waktu-arc" style={{ opacity: dim ? 0.1 : dipilih ? 1 : 0.55 }}>
                 <path d={path} fill="none" stroke={JENIS[r.jenis]?.color} strokeWidth={dipilih && !dim ? 2 : 1}
                   strokeDasharray={r.kategori === "tematik" ? "6 5" : undefined} />
-                <path d={path} className="waktu-arc-hit" onClick={() => onRelasi(i)}><title>{a.simpul.nama} → {b.simpul.nama}: {JENIS[r.jenis]?.label}</title></path>
+                <path d={path} className="waktu-arc-hit" onClick={() => onRelasi(i)} aria-label={`${a.simpul.nama} ke ${b.simpul.nama}: ${JENIS[r.jenis]?.label ?? r.jenis}`} />
               </g>;
             })}
             {titik.map(({ simpul: s, x, atas, jalur }) => {
