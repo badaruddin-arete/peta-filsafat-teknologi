@@ -35,7 +35,7 @@ export const Route = createFileRoute("/")({
 const COL_W = 380;
 const ROW_H = 150;
 const NODE_W = 200;
-const FIT = { padding: 0.15 };
+const FIT = { padding: 0.15, minZoom: 0.2 };
 const kolomDari = (id: string) => kelompokUrut.indexOf(simpul.find((s) => s.id === id)?.kelompok ?? "");
 
 // Relasi dalam satu kolom: lengkung keluar ke sisi kanan kolom agar tidak menembus simpul di antaranya.
