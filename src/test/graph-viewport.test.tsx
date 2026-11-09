@@ -1,6 +1,8 @@
 import { fireEvent, render, screen, cleanup } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { useEffect, type ReactNode } from "react";
+import { QueryClient } from "@tanstack/react-query";
+import { createMemoryHistory, createRouter, RouterProvider } from "@tanstack/react-router";
 
 const { fitView } = vi.hoisted(() => ({ fitView: vi.fn() }));
 vi.mock("@xyflow/react", () => ({
@@ -24,14 +26,26 @@ vi.mock("@xyflow/react", () => ({
   useReactFlow: () => ({ fitView }),
 }));
 
-import { Index } from "@/routes/index";
+import { routeTree } from "@/routeTree.gen";
 
 afterEach(() => { cleanup(); vi.clearAllMocks(); });
 
-it("fits only on initial load and explicit recenter, never on selection or panel close", () => {
-  render(<Index />);
+// Index membaca tab aktif dari query string, jadi ia harus dirender lewat router.
+async function renderApp() {
+  const router = createRouter({
+    routeTree,
+    history: createMemoryHistory({ initialEntries: ["/"] }),
+    context: { queryClient: new QueryClient() },
+  });
+  await router.load();
+  render(<RouterProvider router={router} />);
+}
+
+it("fits only on initial load and explicit recenter, never on selection or panel close", async () => {
+  await renderApp();
+  const pilihPemikir = await screen.findByRole("button", { name: "Pilih pemikir uji" });
   expect(fitView).toHaveBeenCalledTimes(1);
-  fireEvent.click(screen.getByRole("button", { name: "Pilih pemikir uji" }));
+  fireEvent.click(pilihPemikir);
   expect(fitView).toHaveBeenCalledTimes(1);
   fireEvent.click(screen.getByRole("button", { name: "Tutup" }));
   expect(fitView).toHaveBeenCalledTimes(1);
