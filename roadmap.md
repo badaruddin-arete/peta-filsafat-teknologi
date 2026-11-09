@@ -1,0 +1,4 @@
+- [ ] Tambahkan Garis Waktu dengan tahun karya asli, filter, sorotan, dan daftar ponsel.
+- [ ] Gunakan panel rincian yang sama dan simpan tab di query string.
+- [ ] Lindungi judul kolom graf dan pusatkan saat panel dibuka/ditutup.
+- [ ] Uji perilaku dan tampilan desktop/ponsel tanpa mengubah data.
