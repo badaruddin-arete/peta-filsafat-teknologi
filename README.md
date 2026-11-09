@@ -1,5 +1,7 @@
 # Peta Pemikiran Filsafat Teknologi
 
+![tests](https://github.com/badaruddin-arete/peta-filsafat-teknologi/actions/workflows/tests.yml/badge.svg)
+
 Peta interaktif yang memperlihatkan hubungan antar pemikir filsafat teknologi, dari akar klasik (Aristoteles, Plato, Bacon) sampai teori adopsi teknologi dalam manajemen (Rogers, Davis). **Setiap hubungan dan setiap posisi wajib bersumber** dan dapat diperiksa lewat tautan.
 
 Tiga tampilan:
